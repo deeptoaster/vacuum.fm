@@ -1,0 +1,8 @@
+.git-ftp-ignore
+.git-ftp-include
+.gitignore
+package-lock.json
+package.json
+src/*
+tsconfig.json
+webpack.config.js
