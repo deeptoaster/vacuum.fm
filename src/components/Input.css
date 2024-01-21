@@ -1,0 +1,70 @@
+.form-control {
+  display: flex;
+  margin: 0.5em -0.25em 0 0;
+}
+.form-control label {
+  overflow: hidden;
+  width: 8em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.input-group {
+  flex: 1;
+  padding: 0 0.75em;
+}
+.input-group input {
+  margin: 0 -0.5em;
+}
+.input-group select {
+  margin: 0 -0.625em;
+}
+.stage-appear input,
+.stage-appear select,
+.stage-enter input,
+.stage-enter select,
+.stage-exit-active input,
+.stage-exit-active select,
+.stage-enter-done .card-enter input,
+.stage-enter-done .card-enter select,
+.stage-enter-done .card-exit-active input,
+.stage-enter-done .card-exit-active select {
+  background-color: transparent;
+  color: transparent;
+  transition:
+    background-color 200ms,
+    color 200ms;
+}
+input,
+select,
+.stage-appear-active input,
+.stage-appear-active select,
+.stage-enter-active input,
+.stage-enter-active select,
+.stage-enter-done .card-enter-active input,
+.stage-enter-done .card-enter-active select {
+  background-color: #eee6e9;
+  color: #282225;
+  transition:
+    background-color 400ms 600ms,
+    color 400ms 600ms;
+}
+input,
+select {
+  width: 100%;
+  outline: none;
+  border: none;
+  line-height: inherit;
+}
+input {
+  padding: 0 0.5em;
+  font-size: 1em;
+}
+label {
+  font-weight: bold;
+}
+select {
+  height: 1.875em;
+  box-sizing: content-box;
+  padding: 0 0.625em;
+  font-size: 0.8em;
+}

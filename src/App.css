@@ -1,0 +1,116 @@
+.stage-appear article,
+.stage-enter article,
+.stage-exit-active.stage-exit-active article,
+.card-enter article,
+.card-exit-active article,
+footer.stage-enter {
+  box-shadow: none;
+  color: transparent;
+  text-shadow: none;
+  transition:
+    box-shadow 200ms,
+    color 200ms,
+    text-shadow 200ms;
+}
+article,
+.stage-appear-active article,
+.stage-enter-active article,
+.card-enter-active article,
+footer,
+footer.stage-enter-active {
+  box-shadow:
+    -0.05em -0.05em #eee6e9,
+    -0.5em -0.5em 2em #e6dce0,
+    0.05em 0.05em #b0a6ab,
+    0.5em 0.5em 2em #b0a6ab;
+  color: inherit;
+  text-shadow:
+    -0.05em -0.05em 0.05em #eee6e9,
+    0.05em 0.05em 0.05em #b0a6ab;
+  transition:
+    box-shadow 400ms 400ms,
+    color 400ms 600ms,
+    text-shadow 400ms 600ms;
+}
+article {
+  overflow: hidden;
+  margin-bottom: 3em;
+  border-radius: 1em;
+}
+body,
+button,
+input {
+  font:
+    20px/1.5 Nunito,
+    sans-serif;
+}
+body {
+  background-color: #d7c7cf;
+  color: #6a5760;
+}
+figure,
+form,
+h2,
+p {
+  margin: 1em 0;
+}
+figure {
+  text-align: center;
+}
+footer {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  padding: 2em;
+}
+footer button + button,
+footer .button + button,
+footer button + .button,
+footer .button + .button {
+  margin-left: 2em;
+}
+.overlay-enter h2,
+.overlay-exit-active h2,
+.stage-appear h2,
+.stage-enter h2,
+.stage-exit-active h2 {
+  color: transparent;
+  transition: color 300ms;
+}
+h2,
+.overlay-enter-done h2,
+.stage-appear-active h2,
+.stage-enter-active h2 {
+  color: inherit;
+  transition: color 600ms;
+}
+h2 {
+  font:
+    2em 'Playfair Display',
+    sans-serif;
+  color: #617078;
+}
+h3 {
+  margin: 0.8em 0;
+  font-weight: bold;
+  font-size: 1.25em;
+}
+section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  overflow: hidden;
+  transition: filter 300ms;
+}
+aside + section {
+  filter: blur(0.5em);
+}
+aside.overlay-exit-active + section {
+  filter: none;
+}

@@ -1,0 +1,15 @@
+.configure-stage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+.configure-card {
+  width: 20em;
+  padding: 1em 2em;
+}
+h1 {
+  margin: 0 1em 1em 0;
+  color: #7f689d;
+  font: 3em 'Lobster Two', cursive;
+}
