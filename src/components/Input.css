@@ -4,7 +4,7 @@
 }
 .form-control label {
   overflow: hidden;
-  width: 8em;
+  width: 10em;
   text-overflow: ellipsis;
   white-space: nowrap;
 }

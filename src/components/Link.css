@@ -16,7 +16,7 @@ button.button-link.button-link,
 .stage-appear-active button.button-link.button-link,
 .stage-enter-active button.button-link.button-link,
 .card-enter-active button.button-link.button-link {
-  color: #859fab;
+  color: #927b86;
   text-decoration: none;
   transition: color 400ms 600ms;
 }

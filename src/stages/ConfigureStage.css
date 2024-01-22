@@ -1,4 +1,4 @@
-.configure-stage {
+main {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -7,4 +7,18 @@
 .configure-card {
   width: 20em;
   padding: 1em 2em;
+}
+.configure-card-links {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+.configure-card-links li {
+  display: inline;
+}
+.configure-card-links li + li::before {
+  content: '\b7';
+  padding: 0 1em;
+  color: #859fab;
 }
