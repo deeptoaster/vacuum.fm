@@ -16,6 +16,7 @@ export default function App(): JSX.Element {
     <section>
       <SwitchTransition>
         <CSSTransition
+          appear={true}
           classNames="stage"
           key={database == null ? null : stage}
           timeout={{

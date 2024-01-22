@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { useState } from 'react';
 
+import Button from '../components/Button';
 import Input from '../components/Input';
 
 import './ConfigureStage.css';
@@ -35,6 +36,9 @@ export default function ConfigureStage(): JSX.Element {
             value={dateSpan}
           />
         </form>
+        <figure>
+          <Button variant="primary">Get Started</Button>
+        </figure>
       </article>
     </div>
   );

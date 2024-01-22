@@ -48,13 +48,8 @@ body {
   background-color: #d7c7cf;
   color: #6a5760;
 }
-figure,
-form,
-h2,
-p {
-  margin: 1em 0;
-}
 figure {
+  margin: 2em 0 1em 0;
   text-align: center;
 }
 footer {
@@ -70,20 +65,51 @@ footer button + .button,
 footer .button + .button {
   margin-left: 2em;
 }
+form,
+h2,
+p {
+  margin: 1em 0;
+}
+.overlay-enter h1,
 .overlay-enter h2,
+.overlay-exit-active h1,
 .overlay-exit-active h2,
+.stage-appear h1,
 .stage-appear h2,
+.stage-enter h1,
 .stage-enter h2,
+.stage-exit-active h1,
 .stage-exit-active h2 {
   color: transparent;
   transition: color 300ms;
+}
+h1,
+h2,
+.overlay-enter-done h1,
+.overlay-enter-done h2,
+.stage-appear-active h1,
+.stage-appear-active h2,
+.stage-enter-active h1,
+.stage-enter-active h2 {
+  transition: color 600ms;
+}
+h1,
+.overlay-enter-done h1,
+.stage-appear-active h1,
+.stage-enter-active h1 {
+  color: #7f689d;
+}
+h1 {
+  margin: 0 1.5em 1em 0;
+  font:
+    3em 'Lobster Two',
+    cursive;
 }
 h2,
 .overlay-enter-done h2,
 .stage-appear-active h2,
 .stage-enter-active h2 {
   color: inherit;
-  transition: color 600ms;
 }
 h2 {
   font:
