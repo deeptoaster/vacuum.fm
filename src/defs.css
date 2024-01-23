@@ -1,0 +1,26 @@
+:root {
+  --color-background: #d7c7cf;
+  --color-background-button: #d0b2c0;
+  --color-background-button-hover: #d4bcc8;
+  --color-background-button-primary: #e7b492;
+  --color-background-button-primary-hover: #ffcba8;
+  --color-background-error: TODO;
+  --color-background-input: #eee6e9;
+  --color-boundary-button: #af9f93;
+  --color-highlight: #e6dce0;
+  --color-shadow: #b0a6ab;
+  --color-specular: #eee6e9;
+  --color-text: #6a5760;
+  --color-text-button: #282225;
+  --color-text-button-hover: #433c3f;
+  --color-text-button-primary: #302c29;
+  --color-text-button-primary-hover: #504b48;
+  --color-text-button-symbolic: #927b86;
+  --color-text-button-symbolic-hover: TODO;
+  --color-text-error: TODO;
+  --color-text-heading: TODO;
+  --color-text-input: #282225;
+  --color-text-link: var(--color-text-button-symbolic);
+  --color-text-logo: #7f689d;
+  --width-label: 10em;
+}

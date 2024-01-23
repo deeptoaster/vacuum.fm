@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { CSSTransition, SwitchTransition } from 'react-transition-group';
+import { TRANSITION_DURATION } from 'squiffles-components';
 import { useState } from 'react';
 
 import { Database, Stage } from './defs';
@@ -19,10 +20,7 @@ export default function App(): JSX.Element {
           appear={true}
           classNames="stage"
           key={database == null ? null : stage}
-          timeout={{
-            enter: 1200,
-            exit: 300
-          }}
+          timeout={TRANSITION_DURATION}
         >
           {database == null ? (
             <ConfigureStage />

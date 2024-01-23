@@ -19,14 +19,14 @@ article,
 footer,
 footer.stage-enter-active {
   box-shadow:
-    -0.05em -0.05em #eee6e9,
-    -0.5em -0.5em 2em #e6dce0,
-    0.05em 0.05em #b0a6ab,
-    0.5em 0.5em 2em #b0a6ab;
+    -0.05em -0.05em var(--color-specular),
+    -0.5em -0.5em 2em var(--color-highlight),
+    0.05em 0.05em var(--color-shadow),
+    0.5em 0.5em 2em var(--color-shadow);
   color: inherit;
   text-shadow:
-    -0.05em -0.05em 0.05em #eee6e9,
-    0.05em 0.05em 0.05em #b0a6ab;
+    -0.05em -0.05em 0.05em var(--color-specular),
+    0.05em 0.05em 0.05em var(--color-shadow);
   transition:
     box-shadow 400ms 400ms,
     color 400ms 600ms,
@@ -38,15 +38,14 @@ article {
   border-radius: 1em;
 }
 body,
-button,
-input {
+button {
   font:
     20px/1.5 Nunito,
     sans-serif;
 }
 body {
-  background-color: #d7c7cf;
-  color: #6a5760;
+  background-color: var(--color-background);
+  color: var(--color-text);
 }
 figure {
   margin: 2em 0 1em 0;
@@ -97,7 +96,7 @@ h1,
 .overlay-enter-done h1,
 .stage-appear-active h1,
 .stage-enter-active h1 {
-  color: #7f689d;
+  color: var(--color-text-logo);
 }
 h1 {
   margin: 0 1.5em 1em 0;
@@ -110,12 +109,13 @@ h2,
 .stage-appear-active h2,
 .stage-enter-active h2 {
   color: inherit;
+  transition: color 600ms;
 }
 h2 {
   font:
     2em 'Playfair Display',
     sans-serif;
-  color: #617078;
+  color: var(--color-text-heading);
 }
 h3 {
   margin: 0.8em 0;
