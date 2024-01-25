@@ -1,24 +1,24 @@
 export type Album = {
   readonly artistIndex: number;
-  readonly duplicates: { [index: number]: true };
+  readonly duplicates: Record<number, true>;
   readonly name: string;
-  readonly tracks: { [index: number]: true };
+  readonly tracks: Record<number, true>;
 };
 
 export type Artist = {
-  readonly albums: { [index: number]: true };
-  readonly duplicates: { [index: number]: true };
+  readonly albums: Record<number, true>;
+  readonly duplicates: Record<number, true>;
   readonly name: string;
-  readonly tracks: { [index: number]: true };
+  readonly tracks: Record<number, true>;
 };
 
 export type Database = {
   readonly albumCounter: number;
-  readonly albums: { [index: number]: Album };
+  readonly albums: Record<number, Album>;
   readonly artistCounter: number;
-  readonly artists: { [index: number]: Artist };
+  readonly artists: Record<number, Artist>;
   readonly trackCounter: number;
-  readonly tracks: { [index: number]: Track };
+  readonly tracks: Record<number, Track>;
 };
 
 export enum Stage {
@@ -29,6 +29,6 @@ export enum Stage {
 export type Track = {
   readonly albumIndex: number;
   readonly artistIndex: number;
-  readonly duplicates: { [index: number]: true };
+  readonly duplicates: Record<number, true>;
   readonly name: string;
 };

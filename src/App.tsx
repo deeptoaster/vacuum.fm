@@ -3,9 +3,10 @@ import { CSSTransition, SwitchTransition } from 'react-transition-group';
 import { TRANSITION_DURATION } from 'squiffles-components';
 import { useState } from 'react';
 
-import { Database, Stage } from './defs';
 import ConfigureStage from './stages/ConfigureStage';
+import type { Database } from './defs';
 import SplitArtistsStage from './stages/SplitArtistsStage';
+import { Stage } from './defs';
 
 import './App.css';
 
