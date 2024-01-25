@@ -4,7 +4,7 @@
   --color-background-button-hover: #d4bcc8;
   --color-background-button-primary: #e7b492;
   --color-background-button-primary-hover: #ffcba8;
-  --color-background-error: TODO;
+  --color-background-error: #b9adc9;
   --color-background-input: #eee6e9;
   --color-boundary-button: #af9f93;
   --color-highlight: #e6dce0;
@@ -17,7 +17,7 @@
   --color-text-button-primary-hover: #504b48;
   --color-text-button-symbolic: #927b86;
   --color-text-button-symbolic-hover: TODO;
-  --color-text-error: TODO;
+  --color-text-error: #4e4857;
   --color-text-heading: TODO;
   --color-text-input: #282225;
   --color-text-link: var(--color-text-button-symbolic);

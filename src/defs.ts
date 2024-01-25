@@ -26,6 +26,16 @@ export enum Stage {
   length
 }
 
+export class StageError extends Error {
+  public constructor(
+    message: string,
+    public readonly focus: () => void
+  ) {
+    super(message);
+    this.name = 'StageError';
+  }
+}
+
 export type Track = {
   readonly albumIndex: number;
   readonly artistIndex: number;

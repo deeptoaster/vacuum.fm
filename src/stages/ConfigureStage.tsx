@@ -1,21 +1,62 @@
 import * as React from 'react';
 import { Button, Input, Link } from 'squiffles-components';
-import { useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
+import { StageError } from '../defs';
 
 import './ConfigureStage.css';
 
-export default function ConfigureStage(): JSX.Element {
+export default function ConfigureStage(props: {
+  setError: (error: Error | null) => void;
+}): JSX.Element {
+  const { setError } = props;
   const [dateSpan, setDateSpan] = useState<0 | 7 | 30 | 90 | 180 | 365>(7);
   const [username, setUsername] = useState<string>('');
+  const usernameInput = useRef<HTMLInputElement>(null);
+
+  const focusUsername = useCallback(
+    (): void => usernameInput.current?.focus(),
+    []
+  );
+
+  const handleSubmit = useCallback(
+    (event: React.FormEvent<HTMLFormElement>): void => {
+      try {
+        if (username.length < 2 || username.length > 15) {
+          throw new StageError(
+            'Username must be between 2 and 15 characters.',
+            focusUsername
+          );
+        }
+
+        if (!/^[A-Z][-\w]*$/i.test(username)) {
+          throw new StageError(
+            'Username must start with a letter and contain only letters, numbers, hyphens, and underscores.',
+            focusUsername
+          );
+        }
+      } catch (error) {
+        if ((error as Error).name === 'StageError') {
+          setError(error as StageError);
+          (error as StageError).focus();
+        } else {
+          throw error;
+        }
+      }
+
+      event.preventDefault();
+    },
+    [focusUsername, setError, username]
+  );
 
   return (
     <div>
       <main>
         <h1>Vacuum.fm</h1>
         <article className="configure-card">
-          <form>
+          <form onSubmit={handleSubmit}>
             <Input
               id="configure-username"
+              inputRef={usernameInput}
               label="Last.fm Username"
               onUpdate={setUsername}
               value={username}
@@ -34,10 +75,12 @@ export default function ConfigureStage(): JSX.Element {
               ]}
               value={dateSpan}
             />
+            <figure>
+              <Button variant="primary" isSubmit={true}>
+                Get Started
+              </Button>
+            </figure>
           </form>
-          <figure>
-            <Button variant="primary">Get Started</Button>
-          </figure>
         </article>
       </main>
       <ul className="configure-card-links">
