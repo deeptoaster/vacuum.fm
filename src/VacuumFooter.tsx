@@ -6,11 +6,12 @@ import type { Database } from './defs';
 export default function VacuumFooter(props: {
   database: Database | null;
   error: Error | null;
+  setError: (error: Error | null) => void;
 }): JSX.Element {
-  const { error, database } = props;
+  const { error, database, setError } = props;
 
   return (
-    <Footer error={error} visible={database != null}>
+    <Footer error={error} setError={setError} visible={database != null}>
       {null}
     </Footer>
   );

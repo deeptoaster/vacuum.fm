@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { CSSTransition, SwitchTransition } from 'react-transition-group';
-import { ERROR_DURATION, TRANSITION_DURATION } from 'squiffles-components';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { TRANSITION_DURATION } from 'squiffles-components';
 
 import * as VacuumUtils from './utils';
 import type { Database, DateSpan } from './defs';
@@ -17,7 +17,6 @@ export default function App(): JSX.Element {
   const aborted = useRef<boolean>(false);
   const [database, setDatabase] = useState<Database | null>(null);
   const [error, setError] = useState<Error | null>(null);
-  const errorTimeout = useRef<number>();
   const [loadingVisible, setLoadingVisible] = useState<boolean>(false);
   const [stage] = useState<Stage>(Stage.SPLIT_ARTISTS);
   const [, setTotalPages] = useState<number>(Infinity);
@@ -37,16 +36,7 @@ export default function App(): JSX.Element {
     []
   );
 
-  useEffect((): void => {
-    if (error != null) {
-      window.clearTimeout(errorTimeout.current);
-
-      errorTimeout.current = window.setTimeout(
-        () => setError(null),
-        ERROR_DURATION
-      );
-    }
-  }, [error]);
+  useEffect((): void => setError(null), [stage]);
 
   return (
     <>
@@ -66,7 +56,7 @@ export default function App(): JSX.Element {
             ) : null}
           </CSSTransition>
         </SwitchTransition>
-        <VacuumFooter database={database} error={error} />
+        <VacuumFooter database={database} error={error} setError={setError} />
       </section>
     </>
   );
