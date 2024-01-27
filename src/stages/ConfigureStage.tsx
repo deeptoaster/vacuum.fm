@@ -1,15 +1,19 @@
 import * as React from 'react';
 import { Button, Input, Link } from 'squiffles-components';
 import { useCallback, useRef, useState } from 'react';
+import type { FormEvent } from 'react';
+
+import type { DateSpan } from '../defs';
 import { StageError } from '../defs';
 
 import './ConfigureStage.css';
 
 export default function ConfigureStage(props: {
+  loadDatabase: (username: string, dateSpan: DateSpan) => Promise<void>;
   setError: (error: Error | null) => void;
 }): JSX.Element {
-  const { setError } = props;
-  const [dateSpan, setDateSpan] = useState<0 | 7 | 30 | 90 | 180 | 365>(7);
+  const { loadDatabase, setError } = props;
+  const [dateSpan, setDateSpan] = useState<DateSpan>(7);
   const [username, setUsername] = useState<string>('');
   const usernameInput = useRef<HTMLInputElement>(null);
 
@@ -19,7 +23,7 @@ export default function ConfigureStage(props: {
   );
 
   const handleSubmit = useCallback(
-    (event: React.FormEvent<HTMLFormElement>): void => {
+    (event: FormEvent<HTMLFormElement>): void => {
       try {
         if (username.length < 2 || username.length > 15) {
           throw new StageError(
@@ -34,6 +38,8 @@ export default function ConfigureStage(props: {
             focusUsername
           );
         }
+
+        loadDatabase(username, dateSpan);
       } catch (error) {
         if ((error as Error).name === 'StageError') {
           setError(error as StageError);
@@ -45,7 +51,7 @@ export default function ConfigureStage(props: {
 
       event.preventDefault();
     },
-    [focusUsername, setError, username]
+    [dateSpan, focusUsername, loadDatabase, setError, username]
   );
 
   return (

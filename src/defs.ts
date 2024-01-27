@@ -1,5 +1,6 @@
 export type Album = {
   readonly artistIndex: number;
+  readonly count: number;
   readonly duplicates: Record<number, true>;
   readonly name: string;
   readonly tracks: Record<number, true>;
@@ -7,19 +8,22 @@ export type Album = {
 
 export type Artist = {
   readonly albums: Record<number, true>;
+  readonly count: number;
   readonly duplicates: Record<number, true>;
   readonly name: string;
   readonly tracks: Record<number, true>;
 };
 
 export type Database = {
-  readonly albumCounter: number;
+  readonly albumCount: number;
   readonly albums: Record<number, Album>;
-  readonly artistCounter: number;
+  readonly artistCount: number;
   readonly artists: Record<number, Artist>;
-  readonly trackCounter: number;
+  readonly trackCount: number;
   readonly tracks: Record<number, Track>;
 };
+
+export type DateSpan = 0 | 7 | 30 | 90 | 180 | 365;
 
 export enum Stage {
   SPLIT_ARTISTS,
@@ -39,6 +43,7 @@ export class StageError extends Error {
 export type Track = {
   readonly albumIndex: number;
   readonly artistIndex: number;
+  readonly count: number;
   readonly duplicates: Record<number, true>;
   readonly name: string;
 };

@@ -1,5 +1,6 @@
 const ESLintPlugin = require('eslint-webpack-plugin');
 const path = require('path');
+const Dotenv = require('dotenv-webpack');
 
 module.exports = (env) => ({
   devServer: {
@@ -47,6 +48,7 @@ module.exports = (env) => ({
     path: __dirname
   },
   plugins: [
+    new Dotenv({ path: '../.env' }),
     new ESLintPlugin({
       extensions: ['.ts', '.tsx']
     })
