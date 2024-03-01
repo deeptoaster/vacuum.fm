@@ -14,6 +14,18 @@ export type Artist = {
   readonly tracks: Record<number, true>;
 };
 
+export type ArtistSplit = {
+  readonly artistIndex: number;
+  readonly parts: ReadonlyArray<ArtistSplitPart>;
+  readonly replacement: string;
+};
+
+export type ArtistSplitPart = {
+  readonly included: boolean;
+  readonly joiner: string;
+  readonly name: string;
+};
+
 export type Database = {
   readonly albumCount: number;
   readonly albums: Record<number, Album>;

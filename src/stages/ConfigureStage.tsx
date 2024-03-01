@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Button, Input, Link } from 'squiffles-components';
+import { Button, Card, Input, Link } from 'squiffles-components';
 import { useCallback, useRef, useState } from 'react';
 import type { FormEvent } from 'react';
 
@@ -58,7 +58,7 @@ export default function ConfigureStage(props: {
     <div>
       <main>
         <h1>Vacuum.fm</h1>
-        <article className="configure-card">
+        <Card width={20}>
           <form onSubmit={handleSubmit}>
             <Input
               id="configure-username"
@@ -87,7 +87,7 @@ export default function ConfigureStage(props: {
               </Button>
             </figure>
           </form>
-        </article>
+        </Card>
       </main>
       <ul className="configure-card-links">
         <li>

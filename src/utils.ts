@@ -1,2 +1,3 @@
-// eslint-disable-next-line import/prefer-default-export
 export { default as loadDatabase } from './functions/loadDatabase';
+export { default as makeArtistName } from './functions/makeArtistName';
+export { default as splitArtist } from './functions/splitArtist';

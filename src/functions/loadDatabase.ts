@@ -4,10 +4,7 @@ import type { MutableRefObject } from 'react';
 import type { Album, Artist, Database, DateSpan, Track } from '../defs';
 
 type Mutable<T> = {
-  -readonly [Property in Exclude<
-    keyof T,
-    'albums' | 'duplicates' | 'tracks'
-  >]: T[Property];
+  -readonly [Property in Exclude<keyof T, 'duplicates'>]: T[Property];
 } & {
   index: number;
 };
@@ -55,28 +52,28 @@ export default async function loadDatabase(
 
         if (!(artistKey in artists)) {
           artists[artistKey] = {
+            albums: {},
             count: 0,
             index: artistCount,
-            name: artistName
+            name: artistName,
+            tracks: {}
           };
 
           artistCount += 1;
         }
-
-        artists[artistKey].count += 1;
 
         if (!(albumKey in albums)) {
           albums[albumKey] = {
             artistIndex: artists[artistKey].index,
             count: 0,
             index: albumCount,
-            name: albumName
+            name: albumName,
+            tracks: {}
           };
 
+          artists[artistKey].albums[albumCount] = true;
           albumCount += 1;
         }
-
-        albums[albumKey].count += 1;
 
         if (!(trackKey in tracks)) {
           tracks[trackKey] = {
@@ -87,9 +84,13 @@ export default async function loadDatabase(
             name: track.name
           };
 
+          artists[artistKey].tracks[trackCount] = true;
+          albums[albumKey].tracks[trackCount] = true;
           trackCount += 1;
         }
 
+        artists[artistKey].count += 1;
+        albums[albumKey].count += 1;
         tracks[trackKey].count += 1;
       }
     }
@@ -98,33 +99,15 @@ export default async function loadDatabase(
   return {
     albumCount,
     albums: Object.values(albums).map(
-      ({ artistIndex, count, name }: Mutable<Album>): Album => ({
-        artistIndex,
-        count,
-        duplicates: {},
-        name,
-        tracks: {}
-      })
+      (album: Mutable<Album>): Album => ({ ...album, duplicates: {} })
     ),
     artistCount,
     artists: Object.values(artists).map(
-      ({ count, name }: Mutable<Artist>): Artist => ({
-        albums: {},
-        count,
-        duplicates: {},
-        name,
-        tracks: {}
-      })
+      (artist: Mutable<Artist>): Artist => ({ ...artist, duplicates: {} })
     ),
     trackCount,
     tracks: Object.values(tracks).map(
-      ({ albumIndex, artistIndex, count, name }: Mutable<Track>): Track => ({
-        albumIndex,
-        artistIndex,
-        count,
-        duplicates: {},
-        name
-      })
+      (track: Mutable<Track>): Track => ({ ...track, duplicates: {} })
     )
   };
 }

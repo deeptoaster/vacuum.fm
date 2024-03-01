@@ -84,6 +84,7 @@
       "@typescript-eslint/prefer-for-of": "off",
       "@typescript-eslint/prefer-readonly-parameter-types": "off",
       "jsx-a11y/anchor-is-valid": "off",
+      "jsx-a11y/control-has-associated-label": "off",
       "jsx-a11y/label-has-associated-control": "off",
       "react/jsx-props-no-spreading": "off",
       "react/no-array-index-key": "off",

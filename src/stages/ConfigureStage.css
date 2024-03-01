@@ -4,10 +4,6 @@ main {
   justify-content: center;
   height: 100%;
 }
-.configure-card {
-  width: 20em;
-  padding: 1em 2em;
-}
 .configure-card-links {
   list-style-type: none;
   margin: 0;

@@ -15,22 +15,49 @@ import './App.css';
 
 export default function App(): JSX.Element {
   const aborted = useRef<boolean>(false);
-  const [database, setDatabase] = useState<Database | null>(null);
+
+  const [databaseByStage, setDatabaseByStage] = useState<
+    ReadonlyArray<Database>
+  >([]);
+
   const [error, setError] = useState<Error | null>(null);
   const [loadingVisible, setLoadingVisible] = useState<boolean>(false);
-  const [stage] = useState<Stage>(Stage.SPLIT_ARTISTS);
+  const [stage, setStage] = useState<Stage>(Stage.SPLIT_ARTISTS);
   const [, setTotalPages] = useState<number>(Infinity);
 
   const cancelLoad = useCallback((): void => {
     aborted.current = true;
   }, []);
 
+  const incrementStage = useCallback(
+    (updatedDatabase: Database): void => {
+      setDatabaseByStage([
+        ...databaseByStage.slice(0, stage + 1),
+        updatedDatabase
+      ]);
+
+      setStage(stage + 1);
+    },
+    [databaseByStage, stage]
+  );
+
   const loadDatabase = useCallback(
     async (username: string, dateSpan: DateSpan): Promise<void> => {
       setLoadingVisible(true);
-      await VacuumUtils.loadDatabase(username, dateSpan, setTotalPages, aborted)
-        .then(setDatabase)
-        .catch(setError);
+
+      try {
+        const database = await VacuumUtils.loadDatabase(
+          username,
+          dateSpan,
+          setTotalPages,
+          aborted
+        );
+
+        setDatabaseByStage([database]);
+      } catch (loadError) {
+        setError(loadError as Error);
+      }
+
       setLoadingVisible(false);
     },
     []
@@ -46,17 +73,24 @@ export default function App(): JSX.Element {
           <CSSTransition
             appear={true}
             classNames="stage"
-            key={database == null ? null : stage}
+            key={databaseByStage.length === 0 ? null : stage}
             timeout={TRANSITION_DURATION}
           >
-            {database == null ? (
+            {databaseByStage.length === 0 ? (
               <ConfigureStage loadDatabase={loadDatabase} setError={setError} />
             ) : stage === Stage.SPLIT_ARTISTS ? (
-              <SplitArtistsStage />
+              <SplitArtistsStage
+                database={databaseByStage[stage]}
+                incrementStage={incrementStage}
+              />
             ) : null}
           </CSSTransition>
         </SwitchTransition>
-        <VacuumFooter database={database} error={error} setError={setError} />
+        <VacuumFooter
+          error={error}
+          setError={setError}
+          visible={databaseByStage.length !== 0}
+        />
       </section>
     </>
   );
