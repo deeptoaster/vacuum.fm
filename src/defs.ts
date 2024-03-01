@@ -1,3 +1,6 @@
+export const DONATION_URL =
+  'https://www.paypal.com/donate?business=T3NJS3T45WMFC&item_name=Vacuum.fm&currency_code=USD';
+
 export type Album = {
   readonly artistIndex: number;
   readonly count: number;
@@ -41,6 +44,10 @@ export enum Stage {
   SPLIT_ARTISTS,
   length
 }
+
+export const STAGE_NAMES: Record<Exclude<Stage, Stage.length>, string> = {
+  [Stage.SPLIT_ARTISTS]: 'Scrobbles With Multiple Artists'
+};
 
 export class StageError extends Error {
   public constructor(

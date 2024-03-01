@@ -3,8 +3,8 @@ import { Button, Card, Input, Link } from 'squiffles-components';
 import { useCallback, useRef, useState } from 'react';
 import type { FormEvent } from 'react';
 
+import { DONATION_URL, StageError } from '../defs';
 import type { DateSpan } from '../defs';
-import { StageError } from '../defs';
 
 import './ConfigureStage.css';
 
@@ -82,10 +82,7 @@ export default function ConfigureStage(props: {
       </main>
       <ul className="configure-card-links">
         <li>
-          <Link
-            external={true}
-            href="https://www.paypal.com/donate?business=T3NJS3T45WMFC&item_name=Vacuum.fm&currency_code=USD"
-          >
+          <Link external={true} href={DONATION_URL}>
             Donate
           </Link>
         </li>

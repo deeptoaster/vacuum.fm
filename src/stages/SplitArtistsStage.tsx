@@ -3,9 +3,9 @@ import { useCallback, useState } from 'react';
 
 import * as VacuumUtils from '../utils';
 import type { Artist, ArtistSplit, ArtistSplitPart, Database } from '../defs';
+import { STAGE_NAMES, Stage, StageError } from '../defs';
 import SplitArtistRow from '../components/SplitArtistRow';
 import StageContainer from '../components/StageContainer';
-import { StageError } from '../defs';
 
 import './SplitArtistsStage.css';
 
@@ -136,7 +136,7 @@ export default function SplitArtistsStage(props: {
   return (
     <StageContainer
       onSubmit={submitArtistSplits}
-      subtitle="Scrobbles With Multiple Artists"
+      subtitle={STAGE_NAMES[Stage.SPLIT_ARTISTS]}
       title="Part 1: Artist Names"
     >
       <p>

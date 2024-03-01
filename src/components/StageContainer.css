@@ -3,7 +3,7 @@
   flex-direction: column;
   box-sizing: border-box;
   max-height: 100%;
-  padding-bottom: 3em;
+  padding-bottom: 6em;
 }
 .stage article {
   overflow: auto;

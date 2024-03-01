@@ -20,6 +20,27 @@ export default function App(): JSX.Element {
     ReadonlyArray<Database>
   >([]);
 
+  useEffect((): void => {
+    setDatabaseByStage([
+      {
+        artists: [
+          {
+            count: 0,
+            duplicates: [],
+            name: 'Alice, Bob, and Charlie',
+            albums: [],
+            tracks: []
+          }
+        ],
+        artistCount: 1,
+        albums: [],
+        albumCount: 0,
+        tracks: [],
+        trackCount: 0
+      }
+    ]);
+  }, []);
+
   const [error, setError] = useState<Error | null>(null);
   const [loadingVisible, setLoadingVisible] = useState<boolean>(false);
   const [stage, setStage] = useState<Stage>(Stage.SPLIT_ARTISTS);
@@ -90,6 +111,7 @@ export default function App(): JSX.Element {
         <VacuumFooter
           error={error}
           setError={setError}
+          stage={stage}
           visible={databaseByStage.length !== 0}
         />
       </section>

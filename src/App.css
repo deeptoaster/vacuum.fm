@@ -1,3 +1,9 @@
+.pull-left {
+  float: left;
+}
+.pull-right {
+  float: right;
+}
 body {
   background-color: var(--color-background);
   color: var(--color-text);
@@ -9,22 +15,10 @@ figure {
   margin: 2em 0 1em 0;
   text-align: center;
 }
-footer {
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  left: 0;
-  padding: 2em;
-}
-footer button + button,
-footer .button + button,
-footer button + .button,
-footer .button + .button {
-  margin-left: 2em;
-}
 form,
 h2,
-p {
+p,
+table {
   margin: 1em 0;
 }
 .overlay-enter h1,
@@ -92,9 +86,6 @@ section {
   overflow: hidden;
   transition: filter 300ms;
 }
-aside + section {
-  filter: blur(0.5em);
-}
-aside.overlay-exit-active + section {
-  filter: none;
+table {
+  width: 100%;
 }
