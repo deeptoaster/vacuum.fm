@@ -17,25 +17,16 @@ export default function ConfigureStage(props: {
   const [username, setUsername] = useState<string>('');
   const usernameInput = useRef<HTMLInputElement>(null);
 
-  const focusUsername = useCallback(
-    (): void => usernameInput.current?.focus(),
-    []
-  );
-
   const handleSubmit = useCallback(
     (event: FormEvent<HTMLFormElement>): void => {
       try {
         if (username.length < 2 || username.length > 15) {
-          throw new StageError(
-            'Username must be between 2 and 15 characters.',
-            focusUsername
-          );
+          throw new StageError('Username must be between 2 and 15 characters.');
         }
 
         if (!/^[A-Z][-\w]*$/i.test(username)) {
           throw new StageError(
-            'Username must start with a letter and contain only letters, numbers, hyphens, and underscores.',
-            focusUsername
+            'Username must start with a letter and contain only letters, numbers, hyphens, and underscores.'
           );
         }
 
@@ -43,7 +34,7 @@ export default function ConfigureStage(props: {
       } catch (error) {
         if ((error as Error).name === 'StageError') {
           setError(error as StageError);
-          (error as StageError).focus();
+          usernameInput.current?.focus();
         } else {
           throw error;
         }
@@ -51,7 +42,7 @@ export default function ConfigureStage(props: {
 
       event.preventDefault();
     },
-    [dateSpan, focusUsername, loadDatabase, setError, username]
+    [dateSpan, loadDatabase, setError, username]
   );
 
   return (

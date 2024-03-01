@@ -45,7 +45,7 @@ export enum Stage {
 export class StageError extends Error {
   public constructor(
     message: string,
-    public readonly focus: () => void
+    public readonly artistIndex?: number
   ) {
     super(message);
     this.name = 'StageError';

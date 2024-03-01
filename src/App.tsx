@@ -82,6 +82,7 @@ export default function App(): JSX.Element {
               <SplitArtistsStage
                 database={databaseByStage[stage]}
                 incrementStage={incrementStage}
+                setError={setError}
               />
             ) : null}
           </CSSTransition>

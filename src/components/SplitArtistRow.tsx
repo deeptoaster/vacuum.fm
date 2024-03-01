@@ -1,14 +1,16 @@
 import * as React from 'react';
-import { useCallback } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 
-import type { ArtistSplit, ArtistSplitPart } from '../defs';
+import type { ArtistSplit, ArtistSplitPart, StageError } from '../defs';
 
 export default function SplitArtistRow(props: {
   setReplacement: (replacement: string) => void;
   split: ArtistSplit;
+  stageError: StageError | null;
   togglePart: (partIndex: number) => void;
 }): JSX.Element {
-  const { setReplacement, split, togglePart } = props;
+  const { setReplacement, split, stageError, togglePart } = props;
+  const replacementInput = useRef<HTMLInputElement>(null);
 
   const updateReplacement = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>): void => {
@@ -16,6 +18,12 @@ export default function SplitArtistRow(props: {
     },
     [setReplacement]
   );
+
+  useEffect((): void => {
+    if (stageError?.artistIndex === split.artistIndex) {
+      replacementInput.current?.focus();
+    }
+  }, [split, stageError]);
 
   return (
     <tr>
@@ -40,6 +48,7 @@ export default function SplitArtistRow(props: {
         <input
           type="text"
           onChange={updateReplacement}
+          ref={replacementInput}
           value={split.replacement}
         />
       </td>
