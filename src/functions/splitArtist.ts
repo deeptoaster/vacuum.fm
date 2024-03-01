@@ -6,7 +6,7 @@ export default function splitArtist(
 ): ArtistSplit {
   return {
     artistIndex,
-    parts: [...name.matchAll(/(.*?)((,? and |, )(?=[^a-z])|$)/g)]
+    parts: Array.from(name.matchAll(/(.*?)((,? and |, )(?=[^a-z])|$)/g))
       .map(
         (match: RegExpMatchArray): ArtistSplitPart => ({
           included: true,
