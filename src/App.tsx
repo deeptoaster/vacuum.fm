@@ -6,6 +6,7 @@ import { TRANSITION_DURATION } from 'squiffles-components';
 import * as VacuumUtils from './utils';
 import type { Database, DateSpan } from './defs';
 import ConfigureStage from './stages/ConfigureStage';
+import DeduplicateArtistsStage from './stages/DeduplicateArtistsStage';
 import Loading from './modals/Loading';
 import SplitArtistsStage from './stages/SplitArtistsStage';
 import { Stage } from './defs';
@@ -22,28 +23,111 @@ export default function App(): JSX.Element {
 
   useEffect((): void => {
     setDatabaseByStage([
+      {},
       {
         artists: [
           {
-            count: 0,
-            duplicates: [],
+            count: 2,
+            name: 'Alice, Bob & Charlie',
+            albums: { 0: true },
+            tracks: []
+          },
+          {
+            count: 3,
+            name: 'Alice, Bob and Charlie',
+            albums: { 1: true },
+            tracks: []
+          },
+          {
+            count: 5,
             name: 'Alice, Bob, and Charlie',
-            albums: [],
+            albums: { 2: true, 3: true },
             tracks: []
           }
         ],
-        artistCount: 1,
-        albums: [],
-        albumCount: 0,
-        tracks: [],
-        trackCount: 0
+        albums: [
+          {
+            artistIndex: 0,
+            count: 2,
+            name: 'Lorem Album',
+            tracks: { 0: true, 1: true }
+          },
+          {
+            artistIndex: 1,
+            count: 3,
+            name: 'Ipsum Album',
+            tracks: { 2: true, 3: true }
+          },
+          {
+            artistIndex: 2,
+            count: 2,
+            name: 'Dolor Album',
+            tracks: { 4: true, 5: true }
+          },
+          {
+            artistIndex: 2,
+            count: 3,
+            name: 'Dolor Album',
+            tracks: { 6: true, 7: true }
+          }
+        ],
+        tracks: [
+          {
+            albumIndex: 0,
+            artistIndex: 0,
+            count: 1,
+            name: 'Lorem Track'
+          },
+          {
+            albumIndex: 0,
+            artistIndex: 0,
+            count: 1,
+            name: 'Ipsum Track'
+          },
+          {
+            albumIndex: 1,
+            artistIndex: 1,
+            count: 1,
+            name: 'Dolor Track'
+          },
+          {
+            albumIndex: 1,
+            artistIndex: 1,
+            count: 2,
+            name: 'Sit Track'
+          },
+          {
+            albumIndex: 2,
+            artistIndex: 2,
+            count: 1,
+            name: 'Amet Track'
+          },
+          {
+            albumIndex: 2,
+            artistIndex: 2,
+            count: 1,
+            name: 'Consectetur Track'
+          },
+          {
+            albumIndex: 3,
+            artistIndex: 2,
+            count: 1,
+            name: 'Adipiscing Track'
+          },
+          {
+            albumIndex: 3,
+            artistIndex: 2,
+            count: 2,
+            name: 'Elit Track'
+          }
+        ]
       }
     ]);
   }, []);
 
   const [error, setError] = useState<Error | null>(null);
   const [loadingVisible, setLoadingVisible] = useState<boolean>(false);
-  const [stage, setStage] = useState<Stage>(Stage.SPLIT_ARTISTS);
+  const [stage, setStage] = useState<Stage>(Stage.DEDUPLICATE_ARTISTS);
   const [, setTotalPages] = useState<number>(Infinity);
 
   const cancelLoad = useCallback((): void => {
@@ -104,6 +188,11 @@ export default function App(): JSX.Element {
                 database={databaseByStage[stage]}
                 incrementStage={incrementStage}
                 setError={setError}
+              />
+            ) : stage === Stage.DEDUPLICATE_ARTISTS ? (
+              <DeduplicateArtistsStage
+                database={databaseByStage[stage]}
+                incrementStage={incrementStage}
               />
             ) : null}
           </CSSTransition>

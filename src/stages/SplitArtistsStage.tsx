@@ -72,9 +72,9 @@ export default function SplitArtistsStage(props: {
         ...database,
         artists: artistSplits.reduce(
           (
-            updatedArtists: Record<number, Artist>,
+            updatedArtists: Array<Artist>,
             split: ArtistSplit
-          ): Record<number, Artist> => {
+          ): Array<Artist> => {
             const artist = updatedArtists[split.artistIndex];
             const replacement = split.replacement.trim();
 
@@ -92,7 +92,7 @@ export default function SplitArtistsStage(props: {
 
             return updatedArtists;
           },
-          { ...database.artists }
+          [...database.artists]
         )
       });
     } catch (error) {

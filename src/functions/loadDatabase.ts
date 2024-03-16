@@ -97,17 +97,8 @@ export default async function loadDatabase(
   }
 
   return {
-    albumCount,
-    albums: Object.values(albums).map(
-      (album: Mutable<Album>): Album => ({ ...album, duplicates: {} })
-    ),
-    artistCount,
-    artists: Object.values(artists).map(
-      (artist: Mutable<Artist>): Artist => ({ ...artist, duplicates: {} })
-    ),
-    trackCount,
-    tracks: Object.values(tracks).map(
-      (track: Mutable<Track>): Track => ({ ...track, duplicates: {} })
-    )
+    albums: Object.values(albums),
+    artists: Object.values(artists),
+    tracks: Object.values(tracks)
   };
 }
