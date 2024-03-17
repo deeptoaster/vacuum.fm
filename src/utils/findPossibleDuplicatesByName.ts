@@ -7,7 +7,7 @@ function normalizeName(name: string): string {
     .toLowerCase()
     .replace(/ \(.*\)| - .*$| \[.*\]| feat\.? .*$/i, '')
     .replace(/ and /g, ' & ')
-    .replace(/[^ &0-9a-z]/g, '')
+    .replace(/[!-%'-/:-@[-`{-~]/gu, '')
     .replace(/ +/g, ' ');
 }
 

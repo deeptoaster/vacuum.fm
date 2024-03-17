@@ -41,7 +41,7 @@ export default function DeduplicateAlbumsByTracksStage(props: {
       stage={Stage.DEDUPLICATE_ARTISTS_BY_TRACKS}
     >
       <DeduplicateStageContents
-        entities={database.artists}
+        entities={database.albums}
         entityLabel="album"
         possibleDuplicates={possibleDuplicates}
         referenceEntityLabel="artist"

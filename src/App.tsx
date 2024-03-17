@@ -25,109 +25,6 @@ export default function App(): JSX.Element {
     ReadonlyArray<Database>
   >([]);
 
-  useEffect((): void => {
-    setDatabaseByStage([
-      {
-        artists: [
-          {
-            count: 2,
-            name: 'Alice, Bob & Charlie',
-            albums: { 0: true },
-            tracks: []
-          },
-          {
-            count: 3,
-            name: 'Alice, Bob and Charlie',
-            albums: { 1: true },
-            tracks: []
-          },
-          {
-            count: 5,
-            name: 'Alice, Bob, and Charlie',
-            albums: { 2: true, 3: true },
-            tracks: []
-          }
-        ],
-        albums: [
-          {
-            artistIndex: 0,
-            count: 2,
-            name: 'Lorem Album',
-            tracks: { 0: true, 1: true }
-          },
-          {
-            artistIndex: 1,
-            count: 3,
-            name: 'Ipsum Album',
-            tracks: { 2: true, 3: true }
-          },
-          {
-            artistIndex: 2,
-            count: 2,
-            name: 'Lorem Album',
-            tracks: { 4: true, 5: true }
-          },
-          {
-            artistIndex: 2,
-            count: 3,
-            name: 'Lorem Album',
-            tracks: { 6: true, 7: true }
-          }
-        ],
-        tracks: [
-          {
-            albumIndex: 0,
-            artistIndex: 0,
-            count: 1,
-            name: 'Lorem Track'
-          },
-          {
-            albumIndex: 0,
-            artistIndex: 0,
-            count: 1,
-            name: 'Ipsum Track'
-          },
-          {
-            albumIndex: 1,
-            artistIndex: 1,
-            count: 1,
-            name: 'Dolor Track'
-          },
-          {
-            albumIndex: 1,
-            artistIndex: 1,
-            count: 2,
-            name: 'Sit Track'
-          },
-          {
-            albumIndex: 2,
-            artistIndex: 2,
-            count: 1,
-            name: 'Amet Track'
-          },
-          {
-            albumIndex: 2,
-            artistIndex: 2,
-            count: 1,
-            name: 'Consectetur Track'
-          },
-          {
-            albumIndex: 3,
-            artistIndex: 2,
-            count: 1,
-            name: 'Adipiscing Track'
-          },
-          {
-            albumIndex: 3,
-            artistIndex: 2,
-            count: 2,
-            name: 'Lorem Track'
-          }
-        ]
-      }
-    ]);
-  }, []);
-
   const [error, setError] = useState<Error | null>(null);
   const [loadingVisible, setLoadingVisible] = useState<boolean>(false);
   const [stage, setStage] = useState<Stage>(Stage.SPLIT_ARTISTS);
@@ -167,6 +64,7 @@ export default function App(): JSX.Element {
       }
 
       setLoadingVisible(false);
+      aborted.current = false;
     },
     []
   );

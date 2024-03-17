@@ -69,6 +69,24 @@ h3 {
   font-weight: bold;
   font-size: 1.25em;
 }
+.stage-appear input[type='checkbox'],
+.stage-appear input[type='radio'],
+.stage-enter input[type='checkbox'],
+.stage-enter input[type='radio'],
+.stage-exit-active input[type='checkbox'],
+.stage-exit-active input[type='radio'] {
+  opacity: 0;
+  transition: opacity 200ms;
+}
+input[type='checkbox'],
+input[type='radio'],
+.stage-appear-active input[type='checkbox'],
+.stage-appear-active input[type='radio'],
+.stage-enter-active input[type='checkbox'],
+.stage-enter-active input[type='radio'] {
+  opacity: 1;
+  transition: opacity 400ms 600ms;
+}
 section {
   display: flex;
   align-items: center;

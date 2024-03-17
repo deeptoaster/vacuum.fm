@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useCallback, useEffect, useRef } from 'react';
+import { Fragment, useCallback, useEffect, useRef } from 'react';
 
 import type { ArtistSplit, ArtistSplitPart, StageError } from '../defs';
 
@@ -30,8 +30,8 @@ export default function SplitArtistRow(props: {
       <td>
         {split.parts.map(
           (part: ArtistSplitPart, partIndex: number): JSX.Element => (
-            <>
-              <label className="button button-stub">
+            <Fragment key={partIndex}>
+              <label className="button button-stub" key={partIndex}>
                 <input
                   checked={part.included}
                   onChange={(): void => togglePart(partIndex)}
@@ -40,7 +40,7 @@ export default function SplitArtistRow(props: {
                 {part.name}
               </label>{' '}
               {part.joiner}
-            </>
+            </Fragment>
           )
         )}
       </td>

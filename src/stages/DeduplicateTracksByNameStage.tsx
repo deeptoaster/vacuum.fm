@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useCallback, useMemo, useState } from 'react';
 
 import * as VacuumUtils from '../utils';
-import type { Artist, Database, PossibleDuplicate, Track } from '../defs';
+import type { Album, Database, PossibleDuplicate, Track } from '../defs';
 import DeduplicateStageContents from '../components/DeduplicateStageContents';
 import { Stage } from '../defs';
 import StageContainer from '../components/StageContainer';
@@ -19,9 +19,9 @@ export default function DeduplicateTracksByNameStage(props: {
 
   const possibleDuplicates = useMemo(
     (): ReadonlyArray<PossibleDuplicate> =>
-      database.artists
-        .map((artist: Artist): ReadonlyArray<PossibleDuplicate> => {
-          const trackIndices = Object.keys(artist.tracks).map(Number);
+      database.albums
+        .map((album: Album): ReadonlyArray<PossibleDuplicate> => {
+          const trackIndices = Object.keys(album.tracks).map(Number);
 
           return VacuumUtils.findPossibleDuplicatesByName(
             trackIndices.map(
@@ -30,7 +30,7 @@ export default function DeduplicateTracksByNameStage(props: {
           ).map(
             (possibleDuplicate: PossibleDuplicate): PossibleDuplicate => ({
               leftIndex: trackIndices[possibleDuplicate.leftIndex],
-              referenceEntityName: artist.name,
+              referenceEntityName: database.artists[album.artistIndex].name,
               rightIndex: trackIndices[possibleDuplicate.rightIndex]
             })
           );
