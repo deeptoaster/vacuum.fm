@@ -4,7 +4,7 @@ import { useCallback, useMemo, useState } from 'react';
 import * as VacuumUtils from '../utils';
 import { STAGE_NAMES, Stage } from '../defs';
 import type { Database } from '../defs';
-import DeduplicateRow from '../components/DeduplicateRow';
+import DeduplicateStageContents from '../components/DeduplicateStageContents';
 import StageContainer from '../components/StageContainer';
 
 export default function DeduplicateArtistsStage(props: {
@@ -84,36 +84,14 @@ export default function DeduplicateArtistsStage(props: {
       subtitle={STAGE_NAMES[Stage.DEDUPLICATE_ARTISTS]}
       title="Part 1: Artist Names"
     >
-      <p>
-        Different music services may report the same artist in different ways.
-      </p>
-      <p>
-        You can use this tool to merge them by choosing a canonical name for
-        each artist.
-      </p>
-      <table>
-        <thead>
-          <tr>
-            <th>Artist 1</th>
-            <th>Artist 2</th>
-            <th />
-          </tr>
-        </thead>
-        <tbody>
-          {possibleDuplicates.map(
-            ([leftIndex, rightIndex]: [number, number]): JSX.Element => (
-              <DeduplicateRow
-                entities={database.artists}
-                key={`${leftIndex}-${rightIndex}`}
-                leftIndex={leftIndex}
-                remappings={artistRemappings}
-                rightIndex={rightIndex}
-                setRemappings={setArtistRemappings}
-              />
-            )
-          )}
-        </tbody>
-      </table>
+      <DeduplicateStageContents
+        artists={null}
+        entities={database.artists}
+        entityLabel="artist"
+        possibleDuplicates={possibleDuplicates}
+        remappings={artistRemappings}
+        setRemappings={setArtistRemappings}
+      />
     </StageContainer>
   );
 }

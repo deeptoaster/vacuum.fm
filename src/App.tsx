@@ -8,6 +8,7 @@ import type { Database, DateSpan } from './defs';
 import ConfigureStage from './stages/ConfigureStage';
 import DeduplicateAlbumsStage from './stages/DeduplicateAlbumsStage';
 import DeduplicateArtistsStage from './stages/DeduplicateArtistsStage';
+import DeduplicateTracksStage from './stages/DeduplicateTracksStage';
 import Loading from './modals/Loading';
 import SplitArtistsStage from './stages/SplitArtistsStage';
 import { Stage } from './defs';
@@ -197,6 +198,11 @@ export default function App(): JSX.Element {
               />
             ) : stage === Stage.DEDUPLICATE_ALBUMS ? (
               <DeduplicateAlbumsStage
+                database={databaseByStage[stage]}
+                incrementStage={incrementStage}
+              />
+            ) : stage === Stage.DEDUPLICATE_TRACKS ? (
+              <DeduplicateTracksStage
                 database={databaseByStage[stage]}
                 incrementStage={incrementStage}
               />

@@ -4,7 +4,7 @@ import { useCallback, useMemo, useState } from 'react';
 import * as VacuumUtils from '../utils';
 import type { Album, Artist, Database } from '../defs';
 import { STAGE_NAMES, Stage } from '../defs';
-import DeduplicateRow from '../components/DeduplicateRow';
+import DeduplicateStageContents from '../components/DeduplicateStageContents';
 import StageContainer from '../components/StageContainer';
 
 export default function DeduplicateAlbumsStage(props: {
@@ -50,7 +50,7 @@ export default function DeduplicateAlbumsStage(props: {
       );
 
       if (remappedAlbumIndex !== albumIndex) {
-        const { [albumIndex]: ignored, ...otherArtistAlbums } =
+        const { [albumIndex]: artistIgnored, ...otherArtistAlbums } =
           artists[albums[albumIndex].artistIndex].albums;
         const remappedAlbumTracks = { ...albums[remappedAlbumIndex].tracks };
 
@@ -92,38 +92,14 @@ export default function DeduplicateAlbumsStage(props: {
       subtitle={STAGE_NAMES[Stage.DEDUPLICATE_ALBUMS]}
       title="Part 2: Album Names"
     >
-      <p>
-        Different music services may report the same album in different ways.
-      </p>
-      <p>
-        You can use this tool to merge them by choosing a canonical name for
-        each album.
-      </p>
-      <table>
-        <thead>
-          <tr>
-            <th>Artist</th>
-            <th>Album 1</th>
-            <th>Album 2</th>
-            <th />
-          </tr>
-        </thead>
-        <tbody>
-          {possibleDuplicates.map(
-            ([leftIndex, rightIndex]: [number, number]): JSX.Element => (
-              <DeduplicateRow
-                artists={database.artists}
-                entities={database.albums}
-                key={`${leftIndex}-${rightIndex}`}
-                leftIndex={leftIndex}
-                remappings={albumRemappings}
-                rightIndex={rightIndex}
-                setRemappings={setAlbumRemappings}
-              />
-            )
-          )}
-        </tbody>
-      </table>
+      <DeduplicateStageContents
+        artists={database.artists}
+        entities={database.albums}
+        entityLabel="album"
+        possibleDuplicates={possibleDuplicates}
+        remappings={albumRemappings}
+        setRemappings={setAlbumRemappings}
+      />
     </StageContainer>
   );
 }

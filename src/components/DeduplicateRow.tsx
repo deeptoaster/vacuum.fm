@@ -6,7 +6,7 @@ import type { Artist, Entity } from '../defs';
 import './DeduplicateRow.css';
 
 export default function DeduplicateRow(props: {
-  artists?: ReadonlyArray<Artist>;
+  artists: ReadonlyArray<Artist> | null;
   entities: ReadonlyArray<Entity>;
   leftIndex: number;
   remappings: Record<number, number | null>;
@@ -14,7 +14,7 @@ export default function DeduplicateRow(props: {
   setRemappings: (remappings: Record<number, number | null>) => void;
 }): JSX.Element | null {
   const {
-    artists = [],
+    artists,
     entities,
     leftIndex,
     remappings,

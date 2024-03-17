@@ -41,13 +41,15 @@ export enum Stage {
   SPLIT_ARTISTS,
   DEDUPLICATE_ARTISTS,
   DEDUPLICATE_ALBUMS,
+  DEDUPLICATE_TRACKS,
   length
 }
 
 export const STAGE_NAMES: Record<Exclude<Stage, Stage.length>, string> = {
   [Stage.SPLIT_ARTISTS]: 'Scrobbles With Multiple Artists',
   [Stage.DEDUPLICATE_ARTISTS]: 'Artists With Similar Names',
-  [Stage.DEDUPLICATE_ALBUMS]: 'Albums With Similar Names'
+  [Stage.DEDUPLICATE_ALBUMS]: 'Albums With Similar Names',
+  [Stage.DEDUPLICATE_TRACKS]: 'Tracks With Similar Names'
 };
 
 export class StageError extends Error {
