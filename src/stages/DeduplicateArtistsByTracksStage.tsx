@@ -8,7 +8,7 @@ import { Stage } from '../defs';
 import StageContainer from '../components/StageContainer';
 import useSubmitArtistDeduplications from '../hooks/useSubmitArtistDuplications';
 
-export default function DeduplicateArtistsByNameStage(props: {
+export default function DeduplicateArtistsByTracksStage(props: {
   database: Database;
   incrementStage: (updatedDatabase: Database) => void;
 }): JSX.Element {
@@ -20,7 +20,12 @@ export default function DeduplicateArtistsByNameStage(props: {
 
   const possibleDuplicates = useMemo(
     (): ReadonlyArray<PossibleDuplicate> =>
-      VacuumUtils.findPossibleDuplicatesByName(database.artists),
+      VacuumUtils.findPossibleDuplicatesByTracks(
+        database.tracks,
+        'artistIndex',
+        database.albums,
+        'albumIndex'
+      ),
     [database]
   );
 
@@ -33,13 +38,13 @@ export default function DeduplicateArtistsByNameStage(props: {
   return (
     <StageContainer
       onSubmit={submitArtistDeduplications}
-      stage={Stage.DEDUPLICATE_ARTISTS_BY_NAME}
+      stage={Stage.DEDUPLICATE_ARTISTS_BY_TRACKS}
     >
       <DeduplicateStageContents
         entities={database.artists}
         entityLabel="artist"
         possibleDuplicates={possibleDuplicates}
-        referenceEntityName={null}
+        referenceEntityLabel="album"
         remappings={artistRemappings}
         setRemappings={setArtistRemappings}
       />

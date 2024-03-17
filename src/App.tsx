@@ -8,6 +8,7 @@ import type { Database, DateSpan } from './defs';
 import ConfigureStage from './stages/ConfigureStage';
 import DeduplicateAlbumsByNameStage from './stages/DeduplicateAlbumsByNameStage';
 import DeduplicateArtistsByNameStage from './stages/DeduplicateArtistsByNameStage';
+import DeduplicateArtistsByTracksStage from './stages/DeduplicateArtistsByTracksStage';
 import DeduplicateTracksByNameStage from './stages/DeduplicateTracksByNameStage';
 import Loading from './modals/Loading';
 import SplitArtistsStage from './stages/SplitArtistsStage';
@@ -62,13 +63,13 @@ export default function App(): JSX.Element {
           {
             artistIndex: 2,
             count: 2,
-            name: 'Dolor Album',
+            name: 'Lorem Album',
             tracks: { 4: true, 5: true }
           },
           {
             artistIndex: 2,
             count: 3,
-            name: 'Dolor Album',
+            name: 'Lorem Album',
             tracks: { 6: true, 7: true }
           }
         ],
@@ -119,7 +120,7 @@ export default function App(): JSX.Element {
             albumIndex: 3,
             artistIndex: 2,
             count: 2,
-            name: 'Elit Track'
+            name: 'Lorem Track'
           }
         ]
       }
@@ -190,18 +191,23 @@ export default function App(): JSX.Element {
                 incrementStage={incrementStage}
                 setError={setError}
               />
-            ) : stage === Stage.DEDUPLICATE_ARTISTS ? (
+            ) : stage === Stage.DEDUPLICATE_ARTISTS_BY_NAME ? (
               <DeduplicateArtistsByNameStage
                 database={databaseByStage[stage]}
                 incrementStage={incrementStage}
               />
-            ) : stage === Stage.DEDUPLICATE_ALBUMS ? (
+            ) : stage === Stage.DEDUPLICATE_ALBUMS_BY_NAME ? (
               <DeduplicateAlbumsByNameStage
                 database={databaseByStage[stage]}
                 incrementStage={incrementStage}
               />
-            ) : stage === Stage.DEDUPLICATE_TRACKS ? (
+            ) : stage === Stage.DEDUPLICATE_TRACKS_BY_NAME ? (
               <DeduplicateTracksByNameStage
+                database={databaseByStage[stage]}
+                incrementStage={incrementStage}
+              />
+            ) : stage === Stage.DEDUPLICATE_ARTISTS_BY_TRACKS ? (
+              <DeduplicateArtistsByTracksStage
                 database={databaseByStage[stage]}
                 incrementStage={incrementStage}
               />

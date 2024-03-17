@@ -27,7 +27,11 @@ export default function findPossibleDuplicatesByName(
       const rightName = normalizeName(entities[rightIndex].name);
 
       if (leftName === rightName) {
-        possibleDuplicates.push({ leftIndex, rightIndex, score: 1 });
+        possibleDuplicates.push({
+          leftIndex,
+          referenceEntityName: null,
+          rightIndex
+        });
       }
     }
   }

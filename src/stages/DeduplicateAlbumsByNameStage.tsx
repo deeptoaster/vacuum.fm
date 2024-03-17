@@ -3,7 +3,7 @@ import { useCallback, useMemo, useState } from 'react';
 
 import * as VacuumUtils from '../utils';
 import type { Album, Artist, Database, PossibleDuplicate } from '../defs';
-import DeduplicateByNameStageContents from '../components/DeduplicateByNameStageContents';
+import DeduplicateStageContents from '../components/DeduplicateStageContents';
 import { Stage } from '../defs';
 import StageContainer from '../components/StageContainer';
 
@@ -30,8 +30,8 @@ export default function DeduplicateAlbumsByNameStage(props: {
           ).map(
             (possibleDuplicate: PossibleDuplicate): PossibleDuplicate => ({
               leftIndex: albumIndices[possibleDuplicate.leftIndex],
-              rightIndex: albumIndices[possibleDuplicate.rightIndex],
-              score: possibleDuplicate.score
+              referenceEntityName: artist.name,
+              rightIndex: albumIndices[possibleDuplicate.rightIndex]
             })
           );
         })
@@ -90,10 +90,9 @@ export default function DeduplicateAlbumsByNameStage(props: {
   return (
     <StageContainer
       onSubmit={submitAlbumDeduplications}
-      stage={Stage.DEDUPLICATE_ALBUMS}
+      stage={Stage.DEDUPLICATE_ALBUMS_BY_NAME}
     >
-      <DeduplicateByNameStageContents
-        artists={database.artists}
+      <DeduplicateStageContents
         entities={database.albums}
         entityLabel="album"
         possibleDuplicates={possibleDuplicates}

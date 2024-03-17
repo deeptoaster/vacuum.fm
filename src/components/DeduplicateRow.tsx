@@ -1,21 +1,19 @@
 import * as React from 'react';
 import { useCallback } from 'react';
 
-import type { Artist, Entity, PossibleDuplicate } from '../defs';
+import type { Entity, PossibleDuplicate } from '../defs';
 
 import './DeduplicateRow.css';
 
 export default function DeduplicateRow(props: {
-  artists: ReadonlyArray<Artist> | null;
   entities: ReadonlyArray<Entity>;
   possibleDuplicate: PossibleDuplicate;
   remappings: Record<number, number | null>;
   setRemappings: (remappings: Record<number, number | null>) => void;
 }): JSX.Element | null {
   const {
-    artists,
     entities,
-    possibleDuplicate: { leftIndex, rightIndex },
+    possibleDuplicate: { leftIndex, referenceEntityName, rightIndex },
     remappings,
     setRemappings
   } = props;
@@ -40,9 +38,7 @@ export default function DeduplicateRow(props: {
     remappings[leftIndex] === rightIndex) &&
     (remappings[rightIndex] == null || remappings[rightIndex] === leftIndex) ? (
     <tr className="deduplicate-row">
-      {artists != null && 'artistIndex' in entity ? (
-        <td>{artists[entity.artistIndex].name}</td>
-      ) : null}
+      {referenceEntityName != null ? <td>{referenceEntityName}</td> : null}
       <td>
         <input
           checked={remappings[rightIndex] === leftIndex}

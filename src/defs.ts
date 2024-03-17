@@ -37,25 +37,27 @@ export type DateSpan = 0 | 7 | 30 | 90 | 180 | 365;
 
 export type Entity = Album | Artist | Track;
 
+export type PossibleDuplicate = {
+  readonly leftIndex: number;
+  readonly referenceEntityName: string | null;
+  readonly rightIndex: number;
+};
+
 export enum Stage {
   SPLIT_ARTISTS,
-  DEDUPLICATE_ARTISTS,
-  DEDUPLICATE_ALBUMS,
-  DEDUPLICATE_TRACKS,
+  DEDUPLICATE_ARTISTS_BY_NAME,
+  DEDUPLICATE_ALBUMS_BY_NAME,
+  DEDUPLICATE_TRACKS_BY_NAME,
+  DEDUPLICATE_ARTISTS_BY_TRACKS,
   length
 }
 
-export type PossibleDuplicate = {
-  readonly leftIndex: number;
-  readonly rightIndex: number;
-  readonly score: number;
-};
-
 export const STAGE_NAMES: Record<Exclude<Stage, Stage.length>, string> = {
   [Stage.SPLIT_ARTISTS]: 'Scrobbles With Multiple Artists',
-  [Stage.DEDUPLICATE_ARTISTS]: 'Artists With Similar Names',
-  [Stage.DEDUPLICATE_ALBUMS]: 'Albums With Similar Names',
-  [Stage.DEDUPLICATE_TRACKS]: 'Tracks With Similar Names'
+  [Stage.DEDUPLICATE_ARTISTS_BY_NAME]: 'Artists With Similar Names',
+  [Stage.DEDUPLICATE_ALBUMS_BY_NAME]: 'Albums With Similar Names',
+  [Stage.DEDUPLICATE_TRACKS_BY_NAME]: 'Tracks With Similar Names',
+  [Stage.DEDUPLICATE_ARTISTS_BY_TRACKS]: 'Same Album, Same Track'
 };
 
 export class StageError extends Error {
