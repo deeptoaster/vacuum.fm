@@ -45,6 +45,12 @@ export enum Stage {
   length
 }
 
+export type PossibleDuplicate = {
+  readonly leftIndex: number;
+  readonly rightIndex: number;
+  readonly score: number;
+};
+
 export const STAGE_NAMES: Record<Exclude<Stage, Stage.length>, string> = {
   [Stage.SPLIT_ARTISTS]: 'Scrobbles With Multiple Artists',
   [Stage.DEDUPLICATE_ARTISTS]: 'Artists With Similar Names',

@@ -2,12 +2,12 @@ import * as React from 'react';
 import { useCallback, useMemo, useState } from 'react';
 
 import * as VacuumUtils from '../utils';
-import type { Artist, Database, Track } from '../defs';
-import { STAGE_NAMES, Stage } from '../defs';
-import DeduplicateStageContents from '../components/DeduplicateStageContents';
+import type { Artist, Database, PossibleDuplicate, Track } from '../defs';
+import DeduplicateByNameStageContents from '../components/DeduplicateByNameStageContents';
+import { Stage } from '../defs';
 import StageContainer from '../components/StageContainer';
 
-export default function DeduplicateTracksStage(props: {
+export default function DeduplicateTracksByNameStage(props: {
   database: Database;
   incrementStage: (updatedDatabase: Database) => void;
 }): JSX.Element {
@@ -18,20 +18,21 @@ export default function DeduplicateTracksStage(props: {
   >({});
 
   const possibleDuplicates = useMemo(
-    (): ReadonlyArray<[number, number]> =>
+    (): ReadonlyArray<PossibleDuplicate> =>
       database.artists
-        .map((artist: Artist): ReadonlyArray<[number, number]> => {
+        .map((artist: Artist): ReadonlyArray<PossibleDuplicate> => {
           const trackIndices = Object.keys(artist.tracks).map(Number);
 
-          return VacuumUtils.findPossibleDuplicates(
+          return VacuumUtils.findPossibleDuplicatesByName(
             trackIndices.map(
               (trackIndex: number): Track => database.tracks[trackIndex]
             )
           ).map(
-            ([leftIndex, rightIndex]: [number, number]): [number, number] => [
-              trackIndices[leftIndex],
-              trackIndices[rightIndex]
-            ]
+            (possibleDuplicate: PossibleDuplicate): PossibleDuplicate => ({
+              leftIndex: trackIndices[possibleDuplicate.leftIndex],
+              rightIndex: trackIndices[possibleDuplicate.rightIndex],
+              score: possibleDuplicate.score
+            })
           );
         })
         .flat(),
@@ -83,10 +84,9 @@ export default function DeduplicateTracksStage(props: {
   return (
     <StageContainer
       onSubmit={submitTrackDeduplications}
-      subtitle={STAGE_NAMES[Stage.DEDUPLICATE_ALBUMS]}
-      title="Part 3: Track Names"
+      stage={Stage.DEDUPLICATE_TRACKS}
     >
-      <DeduplicateStageContents
+      <DeduplicateByNameStageContents
         artists={database.artists}
         entities={database.entities}
         entityLabel="track"

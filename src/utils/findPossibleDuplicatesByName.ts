@@ -1,4 +1,4 @@
-import type { Entity } from '../defs';
+import type { Entity, PossibleDuplicate } from '../defs';
 
 function normalizeName(name: string): string {
   return name
@@ -11,10 +11,10 @@ function normalizeName(name: string): string {
     .replace(/ +/g, ' ');
 }
 
-export default function findPossibleDuplicates(
+export default function findPossibleDuplicatesByName(
   entities: ReadonlyArray<Entity>
-): ReadonlyArray<[number, number]> {
-  const possibleDuplicates: Array<[number, number]> = [];
+): ReadonlyArray<PossibleDuplicate> {
+  const possibleDuplicates: Array<PossibleDuplicate> = [];
 
   for (let leftIndex = 0; leftIndex < entities.length; leftIndex += 1) {
     const leftName = normalizeName(entities[leftIndex].name);
@@ -27,7 +27,7 @@ export default function findPossibleDuplicates(
       const rightName = normalizeName(entities[rightIndex].name);
 
       if (leftName === rightName) {
-        possibleDuplicates.push([leftIndex, rightIndex]);
+        possibleDuplicates.push({ leftIndex, rightIndex, score: 1 });
       }
     }
   }

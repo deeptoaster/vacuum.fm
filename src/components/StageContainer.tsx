@@ -1,21 +1,24 @@
 import * as React from 'react';
 import { Button, Card } from 'squiffles-components';
 
+import { STAGE_NAMES } from '../defs';
+import type { Stage } from '../defs';
+
 import './StageContainer.css';
 
 export default function StageContainer(props: {
   children: React.ReactNode;
   onSubmit: () => void;
-  subtitle: string;
-  title: string;
+  stage: Exclude<Stage, Stage.length>;
 }): JSX.Element {
-  const { children, onSubmit, subtitle, title } = props;
+  const { children, onSubmit, stage } = props;
 
   return (
     <div className="stage">
-      <h2>{title}</h2>
+      <h2>
+        Part {stage + 1}: {STAGE_NAMES[stage]}
+      </h2>
       <Card width={40}>
-        <h3>{subtitle}</h3>
         {children}
         <figure>
           <Button onClick={onSubmit} variant="primary">

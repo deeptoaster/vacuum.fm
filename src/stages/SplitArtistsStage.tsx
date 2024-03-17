@@ -3,7 +3,7 @@ import { useCallback, useState } from 'react';
 
 import * as VacuumUtils from '../utils';
 import type { Artist, ArtistSplit, ArtistSplitPart, Database } from '../defs';
-import { STAGE_NAMES, Stage, StageError } from '../defs';
+import { Stage, StageError } from '../defs';
 import SplitArtistRow from '../components/SplitArtistRow';
 import StageContainer from '../components/StageContainer';
 
@@ -134,11 +134,7 @@ export default function SplitArtistsStage(props: {
   );
 
   return (
-    <StageContainer
-      onSubmit={submitArtistSplits}
-      subtitle={STAGE_NAMES[Stage.SPLIT_ARTISTS]}
-      title="Part 1: Artist Names"
-    >
+    <StageContainer onSubmit={submitArtistSplits} stage={Stage.SPLIT_ARTISTS}>
       <p>
         Some scrobblers (such as those that scrobble from "Now Playing"
         services) may report multiple artist names for a track, separated by

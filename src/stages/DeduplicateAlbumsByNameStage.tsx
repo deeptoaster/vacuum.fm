@@ -2,12 +2,12 @@ import * as React from 'react';
 import { useCallback, useMemo, useState } from 'react';
 
 import * as VacuumUtils from '../utils';
-import type { Album, Artist, Database } from '../defs';
-import { STAGE_NAMES, Stage } from '../defs';
-import DeduplicateStageContents from '../components/DeduplicateStageContents';
+import type { Album, Artist, Database, PossibleDuplicate } from '../defs';
+import DeduplicateByNameStageContents from '../components/DeduplicateByNameStageContents';
+import { Stage } from '../defs';
 import StageContainer from '../components/StageContainer';
 
-export default function DeduplicateAlbumsStage(props: {
+export default function DeduplicateAlbumsByNameStage(props: {
   database: Database;
   incrementStage: (updatedDatabase: Database) => void;
 }): JSX.Element {
@@ -18,20 +18,21 @@ export default function DeduplicateAlbumsStage(props: {
   >({});
 
   const possibleDuplicates = useMemo(
-    (): ReadonlyArray<[number, number]> =>
+    (): ReadonlyArray<PossibleDuplicate> =>
       database.artists
-        .map((artist: Artist): ReadonlyArray<[number, number]> => {
+        .map((artist: Artist): ReadonlyArray<PossibleDuplicate> => {
           const albumIndices = Object.keys(artist.albums).map(Number);
 
-          return VacuumUtils.findPossibleDuplicates(
+          return VacuumUtils.findPossibleDuplicatesByName(
             albumIndices.map(
               (albumIndex: number): Album => database.albums[albumIndex]
             )
           ).map(
-            ([leftIndex, rightIndex]: [number, number]): [number, number] => [
-              albumIndices[leftIndex],
-              albumIndices[rightIndex]
-            ]
+            (possibleDuplicate: PossibleDuplicate): PossibleDuplicate => ({
+              leftIndex: albumIndices[possibleDuplicate.leftIndex],
+              rightIndex: albumIndices[possibleDuplicate.rightIndex],
+              score: possibleDuplicate.score
+            })
           );
         })
         .flat(),
@@ -89,10 +90,9 @@ export default function DeduplicateAlbumsStage(props: {
   return (
     <StageContainer
       onSubmit={submitAlbumDeduplications}
-      subtitle={STAGE_NAMES[Stage.DEDUPLICATE_ALBUMS]}
-      title="Part 2: Album Names"
+      stage={Stage.DEDUPLICATE_ALBUMS}
     >
-      <DeduplicateStageContents
+      <DeduplicateByNameStageContents
         artists={database.artists}
         entities={database.albums}
         entityLabel="album"

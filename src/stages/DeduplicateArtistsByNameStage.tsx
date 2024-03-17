@@ -2,12 +2,12 @@ import * as React from 'react';
 import { useCallback, useMemo, useState } from 'react';
 
 import * as VacuumUtils from '../utils';
-import { STAGE_NAMES, Stage } from '../defs';
-import type { Database } from '../defs';
-import DeduplicateStageContents from '../components/DeduplicateStageContents';
+import type { Database, PossibleDuplicate } from '../defs';
+import DeduplicateByNameStageContents from '../components/DeduplicateByNameStageContents';
+import { Stage } from '../defs';
 import StageContainer from '../components/StageContainer';
 
-export default function DeduplicateArtistsStage(props: {
+export default function DeduplicateArtistsByNameStage(props: {
   database: Database;
   incrementStage: (updatedDatabase: Database) => void;
 }): JSX.Element {
@@ -18,8 +18,8 @@ export default function DeduplicateArtistsStage(props: {
   >({});
 
   const possibleDuplicates = useMemo(
-    (): ReadonlyArray<[number, number]> =>
-      VacuumUtils.findPossibleDuplicates(database.artists),
+    (): ReadonlyArray<PossibleDuplicate> =>
+      VacuumUtils.findPossibleDuplicatesByName(database.artists),
     [database]
   );
 
@@ -81,10 +81,9 @@ export default function DeduplicateArtistsStage(props: {
   return (
     <StageContainer
       onSubmit={submitArtistDeduplications}
-      subtitle={STAGE_NAMES[Stage.DEDUPLICATE_ARTISTS]}
-      title="Part 1: Artist Names"
+      stage={Stage.DEDUPLICATE_ARTISTS}
     >
-      <DeduplicateStageContents
+      <DeduplicateByNameStageContents
         artists={null}
         entities={database.artists}
         entityLabel="artist"

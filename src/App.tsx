@@ -6,9 +6,9 @@ import { TRANSITION_DURATION } from 'squiffles-components';
 import * as VacuumUtils from './utils';
 import type { Database, DateSpan } from './defs';
 import ConfigureStage from './stages/ConfigureStage';
-import DeduplicateAlbumsStage from './stages/DeduplicateAlbumsStage';
-import DeduplicateArtistsStage from './stages/DeduplicateArtistsStage';
-import DeduplicateTracksStage from './stages/DeduplicateTracksStage';
+import DeduplicateAlbumsByNameStage from './stages/DeduplicateAlbumsByNameStage';
+import DeduplicateArtistsByNameStage from './stages/DeduplicateArtistsByNameStage';
+import DeduplicateTracksByNameStage from './stages/DeduplicateTracksByNameStage';
 import Loading from './modals/Loading';
 import SplitArtistsStage from './stages/SplitArtistsStage';
 import { Stage } from './defs';
@@ -25,7 +25,6 @@ export default function App(): JSX.Element {
 
   useEffect((): void => {
     setDatabaseByStage([
-      {},
       {
         artists: [
           {
@@ -129,7 +128,7 @@ export default function App(): JSX.Element {
 
   const [error, setError] = useState<Error | null>(null);
   const [loadingVisible, setLoadingVisible] = useState<boolean>(false);
-  const [stage, setStage] = useState<Stage>(Stage.DEDUPLICATE_ARTISTS);
+  const [stage, setStage] = useState<Stage>(Stage.SPLIT_ARTISTS);
   const [, setTotalPages] = useState<number>(Infinity);
 
   const cancelLoad = useCallback((): void => {
@@ -192,17 +191,17 @@ export default function App(): JSX.Element {
                 setError={setError}
               />
             ) : stage === Stage.DEDUPLICATE_ARTISTS ? (
-              <DeduplicateArtistsStage
+              <DeduplicateArtistsByNameStage
                 database={databaseByStage[stage]}
                 incrementStage={incrementStage}
               />
             ) : stage === Stage.DEDUPLICATE_ALBUMS ? (
-              <DeduplicateAlbumsStage
+              <DeduplicateAlbumsByNameStage
                 database={databaseByStage[stage]}
                 incrementStage={incrementStage}
               />
             ) : stage === Stage.DEDUPLICATE_TRACKS ? (
-              <DeduplicateTracksStage
+              <DeduplicateTracksByNameStage
                 database={databaseByStage[stage]}
                 incrementStage={incrementStage}
               />
