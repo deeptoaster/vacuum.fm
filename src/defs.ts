@@ -35,17 +35,19 @@ export type Database = {
 
 export type DateSpan = 0 | 7 | 30 | 90 | 180 | 365;
 
-export type EntityWithName = { name: string };
+export type Entity = Album | Artist | Track;
 
 export enum Stage {
   SPLIT_ARTISTS,
   DEDUPLICATE_ARTISTS,
+  DEDUPLICATE_ALBUMS,
   length
 }
 
 export const STAGE_NAMES: Record<Exclude<Stage, Stage.length>, string> = {
   [Stage.SPLIT_ARTISTS]: 'Scrobbles With Multiple Artists',
-  [Stage.DEDUPLICATE_ARTISTS]: 'Artists With Similar Names'
+  [Stage.DEDUPLICATE_ARTISTS]: 'Artists With Similar Names',
+  [Stage.DEDUPLICATE_ALBUMS]: 'Albums With Similar Names'
 };
 
 export class StageError extends Error {

@@ -92,23 +92,27 @@ export default function DeduplicateArtistsStage(props: {
         each artist.
       </p>
       <table>
-        <tr>
-          <th>Artist 1</th>
-          <th>Artist 2</th>
-          <th />
-        </tr>
-        {possibleDuplicates.map(
-          ([leftIndex, rightIndex]: [number, number]): JSX.Element => (
-            <DeduplicateRow
-              entities={database.artists}
-              key={`${leftIndex}-${rightIndex}`}
-              leftIndex={leftIndex}
-              remappings={artistRemappings}
-              rightIndex={rightIndex}
-              setRemappings={setArtistRemappings}
-            />
-          )
-        )}
+        <thead>
+          <tr>
+            <th>Artist 1</th>
+            <th>Artist 2</th>
+            <th />
+          </tr>
+        </thead>
+        <tbody>
+          {possibleDuplicates.map(
+            ([leftIndex, rightIndex]: [number, number]): JSX.Element => (
+              <DeduplicateRow
+                entities={database.artists}
+                key={`${leftIndex}-${rightIndex}`}
+                leftIndex={leftIndex}
+                remappings={artistRemappings}
+                rightIndex={rightIndex}
+                setRemappings={setArtistRemappings}
+              />
+            )
+          )}
+        </tbody>
       </table>
     </StageContainer>
   );

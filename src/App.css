@@ -21,9 +21,7 @@ p,
 table {
   margin: 1em 0;
 }
-.overlay-enter h1,
 .overlay-enter h2,
-.overlay-exit-active h1,
 .overlay-exit-active h2,
 .stage-appear h1,
 .stage-appear h2,
@@ -36,7 +34,6 @@ table {
 }
 h1,
 h2,
-.overlay-enter-done h1,
 .overlay-enter-done h2,
 .stage-appear-active h1,
 .stage-appear-active h2,
@@ -45,7 +42,6 @@ h2,
   transition: color 600ms;
 }
 h1,
-.overlay-enter-done h1,
 .stage-appear-active h1,
 .stage-enter-active h1 {
   color: var(--color-text-logo);
@@ -57,17 +53,16 @@ h1 {
     cursive;
 }
 h2,
+small,
 .overlay-enter-done h2,
 .stage-appear-active h2,
 .stage-enter-active h2 {
-  color: inherit;
-  transition: color 600ms;
+  color: var(--color-text-heading);
 }
 h2 {
   font:
     2em 'Playfair Display',
     sans-serif;
-  color: var(--color-text-heading);
 }
 h3 {
   margin: 0.8em 0;
@@ -85,6 +80,19 @@ section {
   left: 0;
   overflow: hidden;
   transition: filter 300ms;
+}
+.stage-appear small,
+.stage-enter small,
+.stage-exit-active small {
+  color: transparent;
+  transition: color 200ms;
+}
+small,
+.stage-appear-active small,
+.stage-enter-active small {
+  color: var(--color-text-heading);
+  font-size: 0.8em;
+  transition: color 400ms 600ms;
 }
 table {
   width: 100%;

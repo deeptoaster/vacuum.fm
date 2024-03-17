@@ -154,25 +154,29 @@ export default function SplitArtistsStage(props: {
         looks right&mdash;or just type in the correct name yourself!
       </p>
       <table className="split-artists-table">
-        <tr>
-          <th>Original</th>
-          <th>Replacement</th>
-        </tr>
-        {artistSplits.map(
-          (split: ArtistSplit, splitIndex: number): JSX.Element => (
-            <SplitArtistRow
-              key={split.artistIndex}
-              setReplacement={(replacement: string): void =>
-                setReplacement(splitIndex, replacement)
-              }
-              split={split}
-              stageError={stageError}
-              togglePart={(partIndex: number): void =>
-                togglePart(splitIndex, partIndex)
-              }
-            />
-          )
-        )}
+        <thead>
+          <tr>
+            <th>Original</th>
+            <th>Replacement</th>
+          </tr>
+        </thead>
+        <tbody>
+          {artistSplits.map(
+            (split: ArtistSplit, splitIndex: number): JSX.Element => (
+              <SplitArtistRow
+                key={split.artistIndex}
+                setReplacement={(replacement: string): void =>
+                  setReplacement(splitIndex, replacement)
+                }
+                split={split}
+                stageError={stageError}
+                togglePart={(partIndex: number): void =>
+                  togglePart(splitIndex, partIndex)
+                }
+              />
+            )
+          )}
+        </tbody>
       </table>
     </StageContainer>
   );

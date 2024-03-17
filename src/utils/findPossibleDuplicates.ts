@@ -1,4 +1,4 @@
-import type { EntityWithName } from '../defs';
+import type { Entity } from '../defs';
 
 function normalizeName(name: string): string {
   return name
@@ -12,7 +12,7 @@ function normalizeName(name: string): string {
 }
 
 export default function findPossibleDuplicates(
-  entities: ReadonlyArray<EntityWithName>
+  entities: ReadonlyArray<Entity>
 ): ReadonlyArray<[number, number]> {
   const possibleDuplicates: Array<[number, number]> = [];
 

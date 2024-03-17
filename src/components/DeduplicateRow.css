@@ -2,3 +2,6 @@
   padding-left: 0.5em;
   font-weight: normal;
 }
+.deduplicate-row-separate {
+  white-space: nowrap;
+}

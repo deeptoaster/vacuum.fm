@@ -20,7 +20,7 @@
   --color-text-button-symbolic: #927b86;
   --color-text-button-symbolic-hover: TODO;
   --color-text-error: #4e4857;
-  --color-text-heading: TODO;
+  --color-text-heading: var(--color-text-button-symbolic);
   --color-text-input: #282225;
   --color-text-link: var(--color-text-button-symbolic);
   --color-text-logo: #7f689d;
