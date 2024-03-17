@@ -7,10 +7,11 @@ import './VacuumFooter.css';
 export default function VacuumFooter(props: {
   error: Error | null;
   setError: (error: Error | null) => void;
+  setStage: (stage: Stage) => void;
   stage: Stage;
   visible: boolean;
 }): JSX.Element {
-  const { error, setError, stage, visible } = props;
+  const { error, setError, setStage, stage, visible } = props;
 
   return (
     <Footer error={error} setError={setError} visible={visible}>
@@ -29,7 +30,11 @@ export default function VacuumFooter(props: {
                 key={stageIndex}
               >
                 <Tooltip message={STAGE_NAMES[stageIndex]}>
-                  <Button disabled={stageIndex >= stage} variant="stub" />
+                  <Button
+                    disabled={stageIndex >= stage}
+                    onClick={() => setStage(stageIndex)}
+                    variant="stub"
+                  />
                 </Tooltip>
               </li>
             )

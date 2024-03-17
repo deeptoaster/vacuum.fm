@@ -14,9 +14,9 @@ export default function makeArtistName(
         (partIndex === partsToKeep.length - 1
           ? ''
           : partIndex === partsToKeep.length - 2
-            ? parts[parts.length - 2].joiner === ', and ' &&
+            ? /^, (&|and) $/.test(parts[parts.length - 2].joiner) &&
               partsToKeep.length === 2
-              ? ' and '
+              ? parts[parts.length - 2].joiner.slice(1)
               : parts[parts.length - 2].joiner
             : part.joiner)
     )

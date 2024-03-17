@@ -200,6 +200,7 @@ export default function App(): JSX.Element {
         <VacuumFooter
           error={error}
           setError={setError}
+          setStage={setStage}
           stage={stage}
           visible={databaseByStage.length !== 0}
         />
