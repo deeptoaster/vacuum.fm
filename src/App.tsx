@@ -7,6 +7,7 @@ import * as VacuumUtils from './utils';
 import type { Database, DateSpan } from './defs';
 import ConfigureStage from './stages/ConfigureStage';
 import DeduplicateAlbumsByNameStage from './stages/DeduplicateAlbumsByNameStage';
+import DeduplicateAlbumsByTracksStage from './stages/DeduplicateAlbumsByTracksStage';
 import DeduplicateArtistsByNameStage from './stages/DeduplicateArtistsByNameStage';
 import DeduplicateArtistsByTracksStage from './stages/DeduplicateArtistsByTracksStage';
 import DeduplicateTracksByNameStage from './stages/DeduplicateTracksByNameStage';
@@ -208,6 +209,11 @@ export default function App(): JSX.Element {
               />
             ) : stage === Stage.DEDUPLICATE_ARTISTS_BY_TRACKS ? (
               <DeduplicateArtistsByTracksStage
+                database={databaseByStage[stage]}
+                incrementStage={incrementStage}
+              />
+            ) : stage === Stage.DEDUPLICATE_ALBUMS_BY_TRACKS ? (
+              <DeduplicateAlbumsByTracksStage
                 database={databaseByStage[stage]}
                 incrementStage={incrementStage}
               />

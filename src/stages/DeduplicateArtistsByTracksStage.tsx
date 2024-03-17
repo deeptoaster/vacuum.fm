@@ -6,7 +6,7 @@ import type { Database, PossibleDuplicate } from '../defs';
 import DeduplicateStageContents from '../components/DeduplicateStageContents';
 import { Stage } from '../defs';
 import StageContainer from '../components/StageContainer';
-import useSubmitArtistDeduplications from '../hooks/useSubmitArtistDuplications';
+import useSubmitArtistDeduplications from '../hooks/useSubmitArtistDeduplications';
 
 export default function DeduplicateArtistsByTracksStage(props: {
   database: Database;

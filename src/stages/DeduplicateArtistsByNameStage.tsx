@@ -6,7 +6,7 @@ import type { Database, PossibleDuplicate } from '../defs';
 import DeduplicateStageContents from '../components/DeduplicateStageContents';
 import { Stage } from '../defs';
 import StageContainer from '../components/StageContainer';
-import useSubmitArtistDeduplications from '../hooks/useSubmitArtistDuplications';
+import useSubmitArtistDeduplications from '../hooks/useSubmitArtistDeduplications';
 
 export default function DeduplicateArtistsByNameStage(props: {
   database: Database;
@@ -39,7 +39,7 @@ export default function DeduplicateArtistsByNameStage(props: {
         entities={database.artists}
         entityLabel="artist"
         possibleDuplicates={possibleDuplicates}
-        referenceEntityName={null}
+        referenceEntityLabel={null}
         remappings={artistRemappings}
         setRemappings={setArtistRemappings}
       />

@@ -49,6 +49,7 @@ export enum Stage {
   DEDUPLICATE_ALBUMS_BY_NAME,
   DEDUPLICATE_TRACKS_BY_NAME,
   DEDUPLICATE_ARTISTS_BY_TRACKS,
+  DEDUPLICATE_ALBUMS_BY_TRACKS,
   length
 }
 
@@ -57,7 +58,8 @@ export const STAGE_NAMES: Record<Exclude<Stage, Stage.length>, string> = {
   [Stage.DEDUPLICATE_ARTISTS_BY_NAME]: 'Artists With Similar Names',
   [Stage.DEDUPLICATE_ALBUMS_BY_NAME]: 'Albums With Similar Names',
   [Stage.DEDUPLICATE_TRACKS_BY_NAME]: 'Tracks With Similar Names',
-  [Stage.DEDUPLICATE_ARTISTS_BY_TRACKS]: 'Same Album, Same Track'
+  [Stage.DEDUPLICATE_ARTISTS_BY_TRACKS]: 'Same Album, Same Track',
+  [Stage.DEDUPLICATE_ALBUMS_BY_TRACKS]: 'Same Artist, Same Track'
 };
 
 export class StageError extends Error {

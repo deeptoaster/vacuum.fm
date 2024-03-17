@@ -90,6 +90,7 @@ export default function DeduplicateTracksByNameStage(props: {
         entities={database.tracks}
         entityLabel="track"
         possibleDuplicates={possibleDuplicates}
+        referenceEntityLabel={null}
         remappings={trackRemappings}
         setRemappings={setTrackRemappings}
       />

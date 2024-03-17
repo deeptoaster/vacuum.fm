@@ -2,13 +2,13 @@ import * as React from 'react';
 import { useMemo, useState } from 'react';
 
 import * as VacuumUtils from '../utils';
-import type { Album, Artist, Database, PossibleDuplicate } from '../defs';
+import type { Database, PossibleDuplicate } from '../defs';
 import DeduplicateStageContents from '../components/DeduplicateStageContents';
 import { Stage } from '../defs';
 import StageContainer from '../components/StageContainer';
 import useSubmitAlbumDeduplications from '../hooks/useSubmitAlbumDeduplications';
 
-export default function DeduplicateAlbumsByNameStage(props: {
+export default function DeduplicateAlbumsByTracksStage(props: {
   database: Database;
   incrementStage: (updatedDatabase: Database) => void;
 }): JSX.Element {
@@ -20,23 +20,12 @@ export default function DeduplicateAlbumsByNameStage(props: {
 
   const possibleDuplicates = useMemo(
     (): ReadonlyArray<PossibleDuplicate> =>
-      database.artists
-        .map((artist: Artist): ReadonlyArray<PossibleDuplicate> => {
-          const albumIndices = Object.keys(artist.albums).map(Number);
-
-          return VacuumUtils.findPossibleDuplicatesByName(
-            albumIndices.map(
-              (albumIndex: number): Album => database.albums[albumIndex]
-            )
-          ).map(
-            (possibleDuplicate: PossibleDuplicate): PossibleDuplicate => ({
-              leftIndex: albumIndices[possibleDuplicate.leftIndex],
-              referenceEntityName: artist.name,
-              rightIndex: albumIndices[possibleDuplicate.rightIndex]
-            })
-          );
-        })
-        .flat(),
+      VacuumUtils.findPossibleDuplicatesByTracks(
+        database.tracks,
+        'albumIndex',
+        database.artists,
+        'artistIndex'
+      ),
     [database]
   );
 
@@ -49,13 +38,13 @@ export default function DeduplicateAlbumsByNameStage(props: {
   return (
     <StageContainer
       onSubmit={submitAlbumDeduplications}
-      stage={Stage.DEDUPLICATE_ALBUMS_BY_NAME}
+      stage={Stage.DEDUPLICATE_ARTISTS_BY_TRACKS}
     >
       <DeduplicateStageContents
-        entities={database.albums}
+        entities={database.artists}
         entityLabel="album"
         possibleDuplicates={possibleDuplicates}
-        referenceEntityLabel={null}
+        referenceEntityLabel="artist"
         remappings={albumRemappings}
         setRemappings={setAlbumRemappings}
       />
