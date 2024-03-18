@@ -21,21 +21,20 @@ export default function DeduplicateAlbumsByNameStage(props: {
   const possibleDuplicates = useMemo(
     (): ReadonlyArray<PossibleDuplicate> =>
       database.artists
-        .map((artist: Artist): ReadonlyArray<PossibleDuplicate> => {
-          const albumIndices = Object.keys(artist.albums).map(Number);
-
-          return VacuumUtils.findPossibleDuplicatesByName(
-            albumIndices.map(
-              (albumIndex: number): Album => database.albums[albumIndex]
+        .map(
+          (artist: Artist): ReadonlyArray<PossibleDuplicate> =>
+            VacuumUtils.findPossibleDuplicatesByName(
+              artist.albums.map(
+                (albumIndex: number): Album => database.albums[albumIndex]
+              )
+            ).map(
+              (possibleDuplicate: PossibleDuplicate): PossibleDuplicate => ({
+                leftIndex: artist.albums[possibleDuplicate.leftIndex],
+                referenceEntityName: artist.name,
+                rightIndex: artist.albums[possibleDuplicate.rightIndex]
+              })
             )
-          ).map(
-            (possibleDuplicate: PossibleDuplicate): PossibleDuplicate => ({
-              leftIndex: albumIndices[possibleDuplicate.leftIndex],
-              referenceEntityName: artist.name,
-              rightIndex: albumIndices[possibleDuplicate.rightIndex]
-            })
-          );
-        })
+        )
         .flat(),
     [database]
   );
@@ -58,6 +57,7 @@ export default function DeduplicateAlbumsByNameStage(props: {
         referenceEntityLabel={null}
         remappings={albumRemappings}
         setRemappings={setAlbumRemappings}
+        tracks={database.tracks}
       />
     </StageContainer>
   );

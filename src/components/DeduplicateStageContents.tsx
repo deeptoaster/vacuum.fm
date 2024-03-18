@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useMemo } from 'react';
 
-import type { Entity, PossibleDuplicate } from '../defs';
+import type { Entity, PossibleDuplicate, Track } from '../defs';
 import DeduplicateRow from './DeduplicateRow';
 
 export default function DeduplicateStageContents(props: {
@@ -11,6 +11,7 @@ export default function DeduplicateStageContents(props: {
   referenceEntityLabel: string | null;
   remappings: Record<number, number | null>;
   setRemappings: (remappings: Record<number, number | null>) => void;
+  tracks: ReadonlyArray<Track>;
 }): JSX.Element {
   const {
     entities,
@@ -18,7 +19,8 @@ export default function DeduplicateStageContents(props: {
     possibleDuplicates,
     referenceEntityLabel,
     remappings,
-    setRemappings
+    setRemappings,
+    tracks
   } = props;
 
   const capitalizedEntityLabel = useMemo(
@@ -83,6 +85,7 @@ export default function DeduplicateStageContents(props: {
                   possibleDuplicate={possibleDuplicate}
                   remappings={remappings}
                   setRemappings={setRemappings}
+                  tracks={tracks}
                 />
               )
             )}

@@ -1,6 +1,14 @@
+.deduplicate-row {
+  vertical-align: top;
+  font-size: 0.8em;
+}
 .deduplicate-row label {
   padding-left: 0.5em;
   font-weight: normal;
+}
+.deduplicate-row ul {
+  margin-top: 0;
+  font-size: 0.8em;
 }
 .deduplicate-row-separate {
   white-space: nowrap;

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useCallback } from 'react';
 
-import type { Entity, PossibleDuplicate } from '../defs';
+import type { Entity, PossibleDuplicate, Track } from '../defs';
 
 import './DeduplicateRow.css';
 
@@ -10,12 +10,14 @@ export default function DeduplicateRow(props: {
   possibleDuplicate: PossibleDuplicate;
   remappings: Record<number, number | null>;
   setRemappings: (remappings: Record<number, number | null>) => void;
+  tracks: ReadonlyArray<Track>;
 }): JSX.Element | null {
   const {
     entities,
     possibleDuplicate: { leftIndex, referenceEntityName, rightIndex },
     remappings,
-    setRemappings
+    setRemappings,
+    tracks
   } = props;
 
   const handleChange = useCallback(
@@ -31,8 +33,9 @@ export default function DeduplicateRow(props: {
     [leftIndex, remappings, rightIndex, setRemappings]
   );
 
-  const entity = entities[leftIndex];
   const groupName = `${leftIndex}-${rightIndex}`;
+  const leftEntity = entities[leftIndex];
+  const rightEntity = entities[rightIndex];
 
   return (remappings[leftIndex] == null ||
     remappings[leftIndex] === rightIndex) &&
@@ -49,7 +52,16 @@ export default function DeduplicateRow(props: {
           value="left"
         />
         <label htmlFor={`${groupName}-left`}>
-          {entity.name} <small>({entity.count})</small>
+          {leftEntity.name} <small>({leftEntity.count})</small>
+          {'tracks' in leftEntity ? (
+            <ul>
+              {leftEntity.tracks.slice(0, 3).map(
+                (trackIndex: number): JSX.Element => (
+                  <li key={trackIndex}>{tracks[trackIndex].name}</li>
+                )
+              )}
+            </ul>
+          ) : null}
         </label>
       </td>
       <td>
@@ -62,8 +74,16 @@ export default function DeduplicateRow(props: {
           value="right"
         />
         <label htmlFor={`${groupName}-right`}>
-          {entities[rightIndex].name}{' '}
-          <small>({entities[rightIndex].count})</small>
+          {rightEntity.name} <small>({rightEntity.count})</small>
+          {'tracks' in rightEntity ? (
+            <ul>
+              {rightEntity.tracks.slice(0, 3).map(
+                (trackIndex: number): JSX.Element => (
+                  <li key={trackIndex}>{tracks[trackIndex].name}</li>
+                )
+              )}
+            </ul>
+          ) : null}
         </label>
       </td>
       <td className="deduplicate-row-separate">

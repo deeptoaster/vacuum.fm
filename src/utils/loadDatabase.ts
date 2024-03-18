@@ -1,13 +1,11 @@
 /* eslint @typescript-eslint/no-unsafe-member-access: off */
 import type { MutableRefObject } from 'react';
 
-import type { Album, Artist, Database, DateSpan, Track } from '../defs';
+import type { Album, Artist, Database, DateSpan, Entity, Track } from '../defs';
 
-type Mutable<T> = {
-  -readonly [Property in Exclude<keyof T, 'duplicates'>]: T[Property];
-} & {
-  index: number;
-};
+type Mutable<T extends Entity, Indices extends keyof T> = {
+  -readonly [Property in Exclude<keyof T, Indices>]: T[Property];
+} & { [Property in Indices]: Record<number, true> } & { index: number };
 
 export default async function loadDatabase(
   username: string,
@@ -15,11 +13,11 @@ export default async function loadDatabase(
   setTotalPages: (totalPages: number) => void,
   aborted: MutableRefObject<boolean>
 ): Promise<Database> {
-  const artists: Record<string, Mutable<Artist>> = {};
+  const artists: Record<string, Mutable<Artist, 'albums' | 'tracks'>> = {};
   let artistCount = 0;
-  const albums: Record<string, Mutable<Album>> = {};
+  const albums: Record<string, Mutable<Album, 'tracks'>> = {};
   let albumCount = 0;
-  const tracks: Record<string, Mutable<Track>> = {};
+  const tracks: Record<string, Mutable<Track, never>> = {};
   let trackCount = 0;
   let totalPages = Infinity;
 
@@ -97,8 +95,19 @@ export default async function loadDatabase(
   }
 
   return {
-    albums: Object.values(albums),
-    artists: Object.values(artists),
+    albums: Object.values(albums).map(
+      (album: Mutable<Album, 'tracks'>): Album => ({
+        ...album,
+        tracks: Object.keys(album.tracks).map(Number)
+      })
+    ),
+    artists: Object.values(artists).map(
+      (artist: Mutable<Artist, 'albums' | 'tracks'>): Artist => ({
+        ...artist,
+        albums: Object.keys(artist.albums).map(Number),
+        tracks: Object.keys(artist.tracks).map(Number)
+      })
+    ),
     tracks: Object.values(tracks)
   };
 }

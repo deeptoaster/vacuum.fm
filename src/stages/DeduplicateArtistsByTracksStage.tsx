@@ -47,6 +47,7 @@ export default function DeduplicateArtistsByTracksStage(props: {
         referenceEntityLabel="album"
         remappings={artistRemappings}
         setRemappings={setArtistRemappings}
+        tracks={database.tracks}
       />
     </StageContainer>
   );

@@ -13,42 +13,54 @@ export default function useSubmitAlbumDeduplications(
     const artists = [...database.artists];
     const tracks = [...database.tracks];
 
-    for (let albumIndex = 0; albumIndex < albums.length; albumIndex += 1) {
+    for (
+      let albumIndexToRemove = 0;
+      albumIndexToRemove < albums.length;
+      albumIndexToRemove += 1
+    ) {
       const remappedAlbumIndex = VacuumUtils.remapDuplicates(
         albumRemappings,
-        albumIndex
+        albumIndexToRemove
       );
 
-      if (remappedAlbumIndex !== albumIndex) {
-        const { [albumIndex]: artistIgnored, ...otherArtistAlbums } =
-          artists[albums[albumIndex].artistIndex].albums;
-        const remappedAlbumTracks = { ...albums[remappedAlbumIndex].tracks };
+      if (remappedAlbumIndex !== albumIndexToRemove) {
+        const { artistIndex } = albums[albumIndexToRemove];
+        const remappedAlbumTracks = [...albums[albumIndexToRemove].tracks];
 
-        artists[albums[albumIndex].artistIndex] = {
-          ...artists[albums[albumIndex].artistIndex],
-          albums: { ...otherArtistAlbums }
+        artists[artistIndex] = {
+          ...artists[artistIndex],
+          albums: artists[artistIndex].albums.filter(
+            (albumIndex: number): boolean => albumIndex !== albumIndexToRemove
+          )
         };
 
-        // eslint-disable-next-line guard-for-in, no-restricted-syntax
-        for (const trackIndex in albums[albumIndex].tracks) {
+        for (
+          let trackIndex = 0;
+          trackIndex < albums[albumIndexToRemove].tracks.length;
+          trackIndex += 1
+        ) {
           tracks[trackIndex] = {
             ...tracks[trackIndex],
             albumIndex: remappedAlbumIndex
           };
 
-          remappedAlbumTracks[trackIndex] = true;
+          remappedAlbumTracks.push(trackIndex);
         }
+
+        // eslint-disable-next-line @typescript-eslint/require-array-sort-compare
+        remappedAlbumTracks.sort();
 
         albums[remappedAlbumIndex] = {
           ...albums[remappedAlbumIndex],
-          count: albums[remappedAlbumIndex].count + albums[albumIndex].count,
+          count:
+            albums[remappedAlbumIndex].count + albums[albumIndexToRemove].count,
           tracks: remappedAlbumTracks
         };
 
-        albums[albumIndex] = {
-          ...albums[albumIndex],
+        albums[albumIndexToRemove] = {
+          ...albums[albumIndexToRemove],
           count: 0,
-          tracks: {}
+          tracks: []
         };
       }
     }

@@ -13,49 +13,65 @@ export default function useSubmitArtistDeduplications(
     const artists = [...database.artists];
     const tracks = [...database.tracks];
 
-    for (let artistIndex = 0; artistIndex < artists.length; artistIndex += 1) {
+    for (
+      let artistIndexToRemove = 0;
+      artistIndexToRemove < artists.length;
+      artistIndexToRemove += 1
+    ) {
       const remappedArtistIndex = VacuumUtils.remapDuplicates(
         artistRemappings,
-        artistIndex
+        artistIndexToRemove
       );
 
-      if (remappedArtistIndex !== artistIndex) {
-        const remappedArtistAlbums = { ...artists[remappedArtistIndex].albums };
-        const remappedArtistTracks = { ...artists[remappedArtistIndex].tracks };
+      if (remappedArtistIndex !== artistIndexToRemove) {
+        const remappedArtistAlbums = [...artists[remappedArtistIndex].albums];
+        const remappedArtistTracks = [...artists[remappedArtistIndex].tracks];
 
-        // eslint-disable-next-line guard-for-in, no-restricted-syntax
-        for (const albumIndex in artists[artistIndex].albums) {
+        for (
+          let albumIndex = 0;
+          albumIndex < artists[artistIndexToRemove].albums.length;
+          albumIndex += 1
+        ) {
           albums[albumIndex] = {
             ...albums[albumIndex],
             artistIndex: remappedArtistIndex
           };
 
-          remappedArtistAlbums[albumIndex] = true;
+          remappedArtistAlbums.push(albumIndex);
         }
 
-        // eslint-disable-next-line guard-for-in, no-restricted-syntax
-        for (const trackIndex in artists[artistIndex].tracks) {
+        for (
+          let trackIndex = 0;
+          trackIndex < artists[artistIndexToRemove].tracks.length;
+          trackIndex += 1
+        ) {
           tracks[trackIndex] = {
             ...tracks[trackIndex],
             artistIndex: remappedArtistIndex
           };
 
-          remappedArtistTracks[trackIndex] = true;
+          remappedArtistTracks.push(trackIndex);
         }
+
+        // eslint-disable-next-line @typescript-eslint/require-array-sort-compare
+        remappedArtistAlbums.sort();
+        // eslint-disable-next-line @typescript-eslint/require-array-sort-compare
+        remappedArtistTracks.sort();
 
         artists[remappedArtistIndex] = {
           ...artists[remappedArtistIndex],
           albums: remappedArtistAlbums,
           count:
-            artists[remappedArtistIndex].count + artists[artistIndex].count,
+            artists[remappedArtistIndex].count +
+            artists[artistIndexToRemove].count,
           tracks: remappedArtistTracks
         };
 
-        artists[artistIndex] = {
-          ...artists[artistIndex],
-          albums: {},
+        artists[artistIndexToRemove] = {
+          ...artists[artistIndexToRemove],
+          albums: [],
           count: 0,
-          tracks: {}
+          tracks: []
         };
       }
     }

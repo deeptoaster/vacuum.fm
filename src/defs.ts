@@ -5,14 +5,14 @@ export type Album = {
   readonly artistIndex: number;
   readonly count: number;
   readonly name: string;
-  readonly tracks: Record<number, true>;
+  readonly tracks: ReadonlyArray<number>;
 };
 
 export type Artist = {
-  readonly albums: Record<number, true>;
+  readonly albums: ReadonlyArray<number>;
   readonly count: number;
   readonly name: string;
-  readonly tracks: Record<number, true>;
+  readonly tracks: ReadonlyArray<number>;
 };
 
 export type ArtistSplit = {
