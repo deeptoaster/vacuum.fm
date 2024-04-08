@@ -11,6 +11,33 @@ body {
     20px/1.5 Nunito,
     sans-serif;
 }
+del,
+ins {
+  text-decoration: none;
+  text-shadow: none;
+}
+.stage-appear del,
+.stage-appear ins,
+.stage-enter del,
+.stage-enter ins,
+.stage-exit-active del,
+.stage-exit-active ins {
+  background-color: transparent;
+  transition: background-color 200ms;
+}
+del,
+ins,
+.stage-appear-active del,
+.stage-appear-active ins,
+.stage-enter-active del,
+.stage-enter-active ins {
+  transition: background-color 400ms 600ms;
+}
+del,
+.stage-appear-active del,
+.stage-enter-active del {
+  background-color: var(--color-background-error);
+}
 figure {
   margin: 2em 0 1em 0;
   text-align: center;
@@ -86,6 +113,11 @@ input[type='radio'],
 .stage-enter-active input[type='radio'] {
   opacity: 1;
   transition: opacity 400ms 600ms;
+}
+ins,
+.stage-appear-active ins,
+.stage-enter-active ins {
+  background-color: var(--color-background-button-primary-hover);
 }
 section {
   display: flex;

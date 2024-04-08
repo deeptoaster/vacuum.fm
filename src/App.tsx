@@ -14,6 +14,7 @@ import DeduplicateTracksByNameStage from './stages/DeduplicateTracksByNameStage'
 import Loading from './modals/Loading';
 import SplitArtistsStage from './stages/SplitArtistsStage';
 import { Stage } from './defs';
+import SummaryStage from './stages/SummaryStage';
 import VacuumFooter from './VacuumFooter';
 
 import './App.css';
@@ -114,6 +115,11 @@ export default function App(): JSX.Element {
               <DeduplicateAlbumsByTracksStage
                 database={databaseByStage[stage]}
                 incrementStage={incrementStage}
+              />
+            ) : stage === Stage.SUMMARY ? (
+              <SummaryStage
+                finalDatabase={databaseByStage[stage]}
+                initialDatabase={databaseByStage[0]}
               />
             ) : null}
           </CSSTransition>

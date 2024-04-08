@@ -1,0 +1,7 @@
+.summary-table {
+  table-layout: fixed;
+}
+.summary-table tbody {
+  vertical-align: top;
+  font-size: 0.8em;
+}

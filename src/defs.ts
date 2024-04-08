@@ -34,8 +34,9 @@ export type Database = {
 };
 
 export type DateSpan = 0 | 7 | 30 | 90 | 180 | 365;
-
 export type Entity = Album | Artist | Track;
+export type FlattenedChange = { after: FlattenedTrack; before: FlattenedTrack };
+export type FlattenedTrack = { album: string; artist: string; track: string };
 
 export type PossibleDuplicate = {
   readonly leftIndex: number;
@@ -50,6 +51,7 @@ export enum Stage {
   DEDUPLICATE_TRACKS_BY_NAME,
   DEDUPLICATE_ARTISTS_BY_TRACKS,
   DEDUPLICATE_ALBUMS_BY_TRACKS,
+  SUMMARY,
   length
 }
 
@@ -59,7 +61,8 @@ export const STAGE_NAMES: Record<Exclude<Stage, Stage.length>, string> = {
   [Stage.DEDUPLICATE_ALBUMS_BY_NAME]: 'Albums With Similar Names',
   [Stage.DEDUPLICATE_TRACKS_BY_NAME]: 'Tracks With Similar Names',
   [Stage.DEDUPLICATE_ARTISTS_BY_TRACKS]: 'Same Album, Same Track',
-  [Stage.DEDUPLICATE_ALBUMS_BY_TRACKS]: 'Same Artist, Same Track'
+  [Stage.DEDUPLICATE_ALBUMS_BY_TRACKS]: 'Same Artist, Same Track',
+  [Stage.SUMMARY]: 'Summary of Changes'
 };
 
 export class StageError extends Error {

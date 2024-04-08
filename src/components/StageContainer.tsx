@@ -7,11 +7,12 @@ import type { Stage } from '../defs';
 import './StageContainer.css';
 
 export default function StageContainer(props: {
+  actionLabel?: string;
   children: React.ReactNode;
   onSubmit: () => void;
   stage: Exclude<Stage, Stage.length>;
 }): JSX.Element {
-  const { children, onSubmit, stage } = props;
+  const { actionLabel = 'Continue', children, onSubmit, stage } = props;
 
   return (
     <div className="stage">
@@ -22,7 +23,7 @@ export default function StageContainer(props: {
         {children}
         <figure>
           <Button onClick={onSubmit} variant="primary">
-            Continue
+            {actionLabel}
           </Button>
         </figure>
       </Card>
