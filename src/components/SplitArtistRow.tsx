@@ -3,6 +3,8 @@ import { Fragment, useCallback, useEffect, useRef } from 'react';
 
 import type { ArtistSplit, ArtistSplitPart, StageError } from '../defs';
 
+import './SplitArtistRow.css';
+
 export default function SplitArtistRow(props: {
   setReplacement: (replacement: string) => void;
   split: ArtistSplit;
@@ -27,7 +29,7 @@ export default function SplitArtistRow(props: {
 
   return (
     <tr>
-      <td>
+      <td className="split-artist-parts">
         {split.parts.map(
           (part: ArtistSplitPart, partIndex: number): JSX.Element => (
             <Fragment key={partIndex}>

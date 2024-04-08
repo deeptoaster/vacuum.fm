@@ -24,8 +24,9 @@ export default function useSubmitAlbumDeduplications(
       );
 
       if (remappedAlbumIndex !== albumIndexToRemove) {
-        const { artistIndex } = albums[albumIndexToRemove];
-        const remappedAlbumTracks = [...albums[albumIndexToRemove].tracks];
+        const { artistIndex, tracks: albumTracksToRemove } =
+          albums[albumIndexToRemove];
+        const remappedAlbumTracks = [...albums[remappedAlbumIndex].tracks];
 
         artists[artistIndex] = {
           ...artists[artistIndex],
@@ -35,10 +36,12 @@ export default function useSubmitAlbumDeduplications(
         };
 
         for (
-          let trackIndex = 0;
-          trackIndex < albums[albumIndexToRemove].tracks.length;
-          trackIndex += 1
+          let trackIndexIndex = 0;
+          trackIndexIndex < albumTracksToRemove.length;
+          trackIndexIndex += 1
         ) {
+          const trackIndex = albumTracksToRemove[trackIndexIndex];
+
           tracks[trackIndex] = {
             ...tracks[trackIndex],
             albumIndex: remappedAlbumIndex

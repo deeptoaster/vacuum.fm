@@ -24,14 +24,18 @@ export default function useSubmitArtistDeduplications(
       );
 
       if (remappedArtistIndex !== artistIndexToRemove) {
+        const artistAlbumsToRemove = artists[artistIndexToRemove].albums;
         const remappedArtistAlbums = [...artists[remappedArtistIndex].albums];
+        const artistTracksToRemove = artists[artistIndexToRemove].tracks;
         const remappedArtistTracks = [...artists[remappedArtistIndex].tracks];
 
         for (
-          let albumIndex = 0;
-          albumIndex < artists[artistIndexToRemove].albums.length;
-          albumIndex += 1
+          let albumIndexIndex = 0;
+          albumIndexIndex < artistAlbumsToRemove.length;
+          albumIndexIndex += 1
         ) {
+          const albumIndex = artistAlbumsToRemove[albumIndexIndex];
+
           albums[albumIndex] = {
             ...albums[albumIndex],
             artistIndex: remappedArtistIndex
@@ -41,10 +45,12 @@ export default function useSubmitArtistDeduplications(
         }
 
         for (
-          let trackIndex = 0;
-          trackIndex < artists[artistIndexToRemove].tracks.length;
-          trackIndex += 1
+          let trackIndexIndex = 0;
+          trackIndexIndex < artists[artistIndexToRemove].tracks.length;
+          trackIndexIndex += 1
         ) {
+          const trackIndex = artistTracksToRemove[trackIndexIndex];
+
           tracks[trackIndex] = {
             ...tracks[trackIndex],
             artistIndex: remappedArtistIndex

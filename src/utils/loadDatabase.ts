@@ -43,7 +43,7 @@ export default async function loadDatabase(
 
       if (track['@attr']?.nowplaying !== 'true') {
         const artistName = track.artist['#text'];
-        const artistKey = artistName;
+        const artistKey = `- ${artistName}`;
         const albumName = track.album['#text'];
         const albumKey = `${artistKey} - ${albumName}`;
         const trackKey = `${albumKey} - ${track.name}`;

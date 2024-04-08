@@ -7,8 +7,6 @@ import { Stage, StageError } from '../defs';
 import SplitArtistRow from '../components/SplitArtistRow';
 import StageContainer from '../components/StageContainer';
 
-import './SplitArtistsStage.css';
-
 export default function SplitArtistsStage(props: {
   database: Database;
   incrementStage: (updatedDatabase: Database) => void;
@@ -150,7 +148,7 @@ export default function SplitArtistsStage(props: {
         looks right&mdash;or just type in the correct name yourself!
       </p>
       {artistSplits.length !== 0 ? (
-        <table className="split-artists-table">
+        <table>
           <thead>
             <tr>
               <th>Original</th>
