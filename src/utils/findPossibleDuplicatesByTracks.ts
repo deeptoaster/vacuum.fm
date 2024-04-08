@@ -35,6 +35,7 @@ export default function findPossibleDuplicatesByTracks(
             if (!(key in possibleDuplicates)) {
               possibleDuplicates[key] = {
                 leftIndex: leftTrack[field],
+                mandatory: false,
                 referenceEntityName: leftReferenceEntityName,
                 rightIndex: rightTrack[field]
               };

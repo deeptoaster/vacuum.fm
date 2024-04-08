@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 
 import type { Entity, PossibleDuplicate, Track } from '../defs';
 import DeduplicateRow from './DeduplicateRow';
@@ -37,6 +37,35 @@ export default function DeduplicateStageContents(props: {
     [referenceEntityLabel]
   );
 
+  const nonMandatoryPossibleDuplicates = useMemo(
+    (): ReadonlyArray<PossibleDuplicate> =>
+      possibleDuplicates.filter(
+        (possibleDuplicate: PossibleDuplicate) => !possibleDuplicate.mandatory
+      ),
+    [possibleDuplicates]
+  );
+
+  useEffect(
+    () =>
+      setRemappings(
+        possibleDuplicates.reduce(
+          (
+            newRemappings: Record<number, number>,
+            possibleDuplicate: PossibleDuplicate
+          ) => {
+            if (possibleDuplicate.mandatory) {
+              newRemappings[possibleDuplicate.rightIndex] =
+                possibleDuplicate.leftIndex;
+            }
+
+            return newRemappings;
+          },
+          {}
+        )
+      ),
+    [possibleDuplicates, setRemappings]
+  );
+
   return (
     <>
       {referenceEntityLabel != null ? (
@@ -62,7 +91,7 @@ export default function DeduplicateStageContents(props: {
           </p>
         </>
       )}
-      {possibleDuplicates.length !== 0 ? (
+      {nonMandatoryPossibleDuplicates.length !== 0 ? (
         <table>
           <thead>
             <tr>
@@ -77,18 +106,23 @@ export default function DeduplicateStageContents(props: {
             </tr>
           </thead>
           <tbody>
-            {possibleDuplicates.map(
-              (possibleDuplicate: PossibleDuplicate): JSX.Element => (
-                <DeduplicateRow
-                  entities={entities}
-                  key={`${possibleDuplicate.leftIndex}-${possibleDuplicate.rightIndex}`}
-                  possibleDuplicate={possibleDuplicate}
-                  remappings={remappings}
-                  setRemappings={setRemappings}
-                  tracks={tracks}
-                />
+            {nonMandatoryPossibleDuplicates
+              .filter(
+                (possibleDuplicate: PossibleDuplicate) =>
+                  !possibleDuplicate.mandatory
               )
-            )}
+              .map(
+                (possibleDuplicate: PossibleDuplicate): JSX.Element => (
+                  <DeduplicateRow
+                    entities={entities}
+                    key={`${possibleDuplicate.leftIndex}-${possibleDuplicate.rightIndex}`}
+                    possibleDuplicate={possibleDuplicate}
+                    remappings={remappings}
+                    setRemappings={setRemappings}
+                    tracks={tracks}
+                  />
+                )
+              )}
           </tbody>
         </table>
       ) : (

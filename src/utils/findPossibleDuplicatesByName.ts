@@ -17,18 +17,21 @@ export default function findPossibleDuplicatesByName(
   const possibleDuplicates: Array<PossibleDuplicate> = [];
 
   for (let leftIndex = 0; leftIndex < entities.length; leftIndex += 1) {
-    const leftName = normalizeName(entities[leftIndex].name);
+    const leftName = entities[leftIndex].name;
+    const leftNormalizedName = normalizeName(leftName);
 
     for (
       let rightIndex = leftIndex + 1;
       rightIndex < entities.length;
       rightIndex += 1
     ) {
-      const rightName = normalizeName(entities[rightIndex].name);
+      const rightName = entities[rightIndex].name;
+      const rightNormalizedName = normalizeName(rightName);
 
-      if (leftName === rightName) {
+      if (leftNormalizedName === rightNormalizedName) {
         possibleDuplicates.push({
           leftIndex,
+          mandatory: leftName === rightName,
           referenceEntityName: null,
           rightIndex
         });

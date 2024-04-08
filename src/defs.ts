@@ -40,6 +40,7 @@ export type FlattenedTrack = { album: string; artist: string; track: string };
 
 export type PossibleDuplicate = {
   readonly leftIndex: number;
+  readonly mandatory: boolean;
   readonly referenceEntityName: string | null;
   readonly rightIndex: number;
 };

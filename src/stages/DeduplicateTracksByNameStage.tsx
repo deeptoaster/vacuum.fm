@@ -29,6 +29,7 @@ export default function DeduplicateTracksByNameStage(props: {
             ).map(
               (possibleDuplicate: PossibleDuplicate): PossibleDuplicate => ({
                 leftIndex: album.tracks[possibleDuplicate.leftIndex],
+                mandatory: possibleDuplicate.mandatory,
                 referenceEntityName: database.artists[album.artistIndex].name,
                 rightIndex: album.tracks[possibleDuplicate.rightIndex]
               })
