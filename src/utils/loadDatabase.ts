@@ -1,11 +1,27 @@
 /* eslint @typescript-eslint/no-unsafe-member-access: off */
 import type { MutableRefObject } from 'react';
 
-import type { Album, Artist, Database, DateSpan, Entity, Track } from '../defs';
+import type {
+  Album,
+  Artist,
+  Database,
+  DateSpan,
+  Entities,
+  EntityIndices
+} from '../defs';
+import makeIndex from './makeIndex';
 
-type Mutable<T extends Entity, Indices extends keyof T> = {
-  -readonly [Property in Exclude<keyof T, Indices>]: T[Property];
-} & { [Property in Indices]: Record<number, true> } & { index: number };
+type Mutable<
+  Brand extends keyof Entities,
+  Indices extends keyof Entities[Brand]
+> = {
+  -readonly [Property in Exclude<
+    keyof Entities[Brand],
+    Indices
+  >]: Entities[Brand][Property];
+} & {
+  [Property in Indices]: Record<number, true>;
+} & { index: EntityIndices[Brand] };
 
 export default async function loadDatabase(
   username: string,
@@ -13,11 +29,11 @@ export default async function loadDatabase(
   setTotalPages: (totalPages: number) => void,
   aborted: MutableRefObject<boolean>
 ): Promise<Database> {
-  const artists: Record<string, Mutable<Artist, 'albums' | 'tracks'>> = {};
+  const artists: Record<string, Mutable<'artist', 'albums' | 'tracks'>> = {};
   let artistCount = 0;
-  const albums: Record<string, Mutable<Album, 'tracks'>> = {};
+  const albums: Record<string, Mutable<'album', 'tracks'>> = {};
   let albumCount = 0;
-  const tracks: Record<string, Mutable<Track, never>> = {};
+  const tracks: Record<string, Mutable<'track', never>> = {};
   let trackCount = 0;
   let totalPages = Infinity;
 
@@ -52,7 +68,7 @@ export default async function loadDatabase(
           artists[artistKey] = {
             albums: {},
             count: 0,
-            index: artistCount,
+            index: makeIndex<'artist'>(artistCount),
             name: artistName,
             tracks: {}
           };
@@ -64,7 +80,7 @@ export default async function loadDatabase(
           albums[albumKey] = {
             artistIndex: artists[artistKey].index,
             count: 0,
-            index: albumCount,
+            index: makeIndex<'album'>(albumCount),
             name: albumName,
             tracks: {}
           };
@@ -78,7 +94,7 @@ export default async function loadDatabase(
             albumIndex: albums[albumKey].index,
             artistIndex: artists[artistKey].index,
             count: 0,
-            index: trackCount,
+            index: makeIndex<'track'>(trackCount),
             name: track.name
           };
 
@@ -96,16 +112,22 @@ export default async function loadDatabase(
 
   return {
     albums: Object.values(albums).map(
-      (album: Mutable<Album, 'tracks'>): Album => ({
+      (album: Mutable<'album', 'tracks'>): Album => ({
         ...album,
-        tracks: Object.keys(album.tracks).map(Number)
+        tracks: Object.keys(album.tracks)
+          .map(Number)
+          .map(makeIndex<'track'>)
       })
     ),
     artists: Object.values(artists).map(
-      (artist: Mutable<Artist, 'albums' | 'tracks'>): Artist => ({
+      (artist: Mutable<'artist', 'albums' | 'tracks'>): Artist => ({
         ...artist,
-        albums: Object.keys(artist.albums).map(Number),
-        tracks: Object.keys(artist.tracks).map(Number)
+        albums: Object.keys(artist.albums)
+          .map(Number)
+          .map(makeIndex<'album'>),
+        tracks: Object.keys(artist.tracks)
+          .map(Number)
+          .map(makeIndex<'track'>)
       })
     ),
     tracks: Object.values(tracks)

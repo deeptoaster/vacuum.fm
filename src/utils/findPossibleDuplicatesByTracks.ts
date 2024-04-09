@@ -1,12 +1,17 @@
-import type { Entity, PossibleDuplicate, Track } from '../defs';
+import type { Entities, PossibleDuplicate, Track } from '../defs';
+import makeIndex from './makeIndex';
+import makeKey from './makeKey';
 
-export default function findPossibleDuplicatesByTracks(
+export default function findPossibleDuplicatesByTracks<
+  Brand extends Exclude<keyof Entities, 'track'>,
+  ReferenceBrand extends Exclude<keyof Entities, Brand | 'track'>
+>(
   tracks: ReadonlyArray<Track>,
   field: 'albumIndex' | 'artistIndex',
-  referenceEntities: ReadonlyArray<Entity>,
+  referenceEntities: ReadonlyArray<Entities[ReferenceBrand]>,
   referenceField: 'albumIndex' | 'artistIndex'
-): ReadonlyArray<PossibleDuplicate> {
-  const possibleDuplicates: Record<string, PossibleDuplicate> = {};
+): ReadonlyArray<PossibleDuplicate<Brand>> {
+  const possibleDuplicates: Record<string, PossibleDuplicate<Brand>> = {};
 
   for (let leftIndex = 0; leftIndex < tracks.length; leftIndex += 1) {
     const leftTrack = tracks[leftIndex];
@@ -30,14 +35,14 @@ export default function findPossibleDuplicatesByTracks(
             leftReferenceEntityName === rightReferenceEntityName &&
             leftTrack.name === rightTrack.name
           ) {
-            const key = `${leftTrack[field]}-${rightTrack[field]}`;
+            const key = makeKey(leftTrack[field], rightTrack[field]);
 
             if (!(key in possibleDuplicates)) {
               possibleDuplicates[key] = {
-                leftIndex: leftTrack[field],
+                leftIndex: makeIndex(leftTrack[field]),
                 mandatory: false,
                 referenceEntityName: leftReferenceEntityName,
-                rightIndex: rightTrack[field]
+                rightIndex: makeIndex(rightTrack[field])
               };
             }
           }

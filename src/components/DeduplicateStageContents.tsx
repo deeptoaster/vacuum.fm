@@ -1,16 +1,19 @@
 import * as React from 'react';
 import { useEffect, useMemo } from 'react';
 
-import type { Entity, PossibleDuplicate, Track } from '../defs';
+import * as VacuumUtils from '../utils';
+import type { Entities, PossibleDuplicate, Remappings, Track } from '../defs';
 import DeduplicateRow from './DeduplicateRow';
 
-export default function DeduplicateStageContents(props: {
-  entities: ReadonlyArray<Entity>;
+export default function DeduplicateStageContents<
+  Brand extends keyof Entities
+>(props: {
+  entities: ReadonlyArray<Entities[Brand]>;
   entityLabel: string;
-  possibleDuplicates: ReadonlyArray<PossibleDuplicate>;
+  possibleDuplicates: ReadonlyArray<PossibleDuplicate<Brand>>;
   referenceEntityLabel: string | null;
-  remappings: Record<number, number | null>;
-  setRemappings: (remappings: Record<number, number | null>) => void;
+  remappings: Remappings<Brand>;
+  setRemappings: (remappings: Remappings<Brand>) => void;
   tracks: ReadonlyArray<Track>;
 }): JSX.Element {
   const {
@@ -38,9 +41,10 @@ export default function DeduplicateStageContents(props: {
   );
 
   const nonMandatoryPossibleDuplicates = useMemo(
-    (): ReadonlyArray<PossibleDuplicate> =>
+    (): ReadonlyArray<PossibleDuplicate<Brand>> =>
       possibleDuplicates.filter(
-        (possibleDuplicate: PossibleDuplicate) => !possibleDuplicate.mandatory
+        (possibleDuplicate: PossibleDuplicate<Brand>) =>
+          !possibleDuplicate.mandatory
       ),
     [possibleDuplicates]
   );
@@ -50,8 +54,8 @@ export default function DeduplicateStageContents(props: {
       setRemappings(
         possibleDuplicates.reduce(
           (
-            newRemappings: Record<number, number>,
-            possibleDuplicate: PossibleDuplicate
+            newRemappings: Remappings<Brand>,
+            possibleDuplicate: PossibleDuplicate<Brand>
           ) => {
             if (possibleDuplicate.mandatory) {
               newRemappings[possibleDuplicate.rightIndex] =
@@ -60,7 +64,8 @@ export default function DeduplicateStageContents(props: {
 
             return newRemappings;
           },
-          {}
+          // eslint-disable-next-line @typescript-eslint/prefer-reduce-type-parameter
+          {} as Remappings<Brand>
         )
       ),
     [possibleDuplicates, setRemappings]
@@ -108,14 +113,17 @@ export default function DeduplicateStageContents(props: {
           <tbody>
             {nonMandatoryPossibleDuplicates
               .filter(
-                (possibleDuplicate: PossibleDuplicate) =>
+                (possibleDuplicate: PossibleDuplicate<Brand>) =>
                   !possibleDuplicate.mandatory
               )
               .map(
-                (possibleDuplicate: PossibleDuplicate): JSX.Element => (
+                (possibleDuplicate: PossibleDuplicate<Brand>): JSX.Element => (
                   <DeduplicateRow
                     entities={entities}
-                    key={`${possibleDuplicate.leftIndex}-${possibleDuplicate.rightIndex}`}
+                    key={VacuumUtils.makeKey(
+                      possibleDuplicate.leftIndex,
+                      possibleDuplicate.rightIndex
+                    )}
                     possibleDuplicate={possibleDuplicate}
                     remappings={remappings}
                     setRemappings={setRemappings}

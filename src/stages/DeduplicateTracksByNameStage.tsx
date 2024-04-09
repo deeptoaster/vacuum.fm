@@ -1,11 +1,19 @@
 import * as React from 'react';
-import { useCallback, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import * as VacuumUtils from '../utils';
-import type { Album, Database, PossibleDuplicate, Track } from '../defs';
+import type {
+  Album,
+  Database,
+  PossibleDuplicate,
+  Remappings,
+  Track,
+  TrackIndex
+} from '../defs';
 import DeduplicateStageContents from '../components/DeduplicateStageContents';
 import { Stage } from '../defs';
 import StageContainer from '../components/StageContainer';
+import useSubmitTrackDeduplications from '../hooks/useSubmitTrackDeduplications';
 
 export default function DeduplicateTracksByNameStage(props: {
   database: Database;
@@ -13,21 +21,23 @@ export default function DeduplicateTracksByNameStage(props: {
 }): JSX.Element {
   const { database, incrementStage } = props;
 
-  const [trackRemappings, setTrackRemappings] = useState<
-    Record<number, number | null>
-  >({});
+  const [trackRemappings, setTrackRemappings] = useState<Remappings<'track'>>(
+    {}
+  );
 
   const possibleDuplicates = useMemo(
-    (): ReadonlyArray<PossibleDuplicate> =>
+    (): ReadonlyArray<PossibleDuplicate<'track'>> =>
       database.albums
         .map(
-          (album: Album): ReadonlyArray<PossibleDuplicate> =>
-            VacuumUtils.findPossibleDuplicatesByName(
+          (album: Album): ReadonlyArray<PossibleDuplicate<'track'>> =>
+            VacuumUtils.findPossibleDuplicatesByName<'track'>(
               album.tracks.map(
-                (trackIndex: number): Track => database.tracks[trackIndex]
+                (trackIndex: TrackIndex): Track => database.tracks[trackIndex]
               )
             ).map(
-              (possibleDuplicate: PossibleDuplicate): PossibleDuplicate => ({
+              (
+                possibleDuplicate: PossibleDuplicate<'track'>
+              ): PossibleDuplicate<'track'> => ({
                 leftIndex: album.tracks[possibleDuplicate.leftIndex],
                 mandatory: possibleDuplicate.mandatory,
                 referenceEntityName: database.artists[album.artistIndex].name,
@@ -39,53 +49,11 @@ export default function DeduplicateTracksByNameStage(props: {
     [database]
   );
 
-  const submitTrackDeduplications = useCallback((): void => {
-    const albums = [...database.albums];
-    const artists = [...database.artists];
-    const tracks = [...database.tracks];
-
-    for (
-      let trackIndexToRemove = 0;
-      trackIndexToRemove < tracks.length;
-      trackIndexToRemove += 1
-    ) {
-      const remappedTrackIndex = VacuumUtils.remapDuplicates(
-        trackRemappings,
-        trackIndexToRemove
-      );
-
-      if (remappedTrackIndex !== trackIndexToRemove) {
-        const { albumIndex, artistIndex } = tracks[trackIndexToRemove];
-
-        albums[albumIndex] = {
-          ...albums[albumIndex],
-          tracks: albums[albumIndex].tracks.filter(
-            (trackIndex: number): boolean => trackIndex !== trackIndexToRemove
-          )
-        };
-
-        artists[artistIndex] = {
-          ...artists[artistIndex],
-          tracks: artists[artistIndex].tracks.filter(
-            (trackIndex: number): boolean => trackIndex !== trackIndexToRemove
-          )
-        };
-
-        tracks[remappedTrackIndex] = {
-          ...tracks[remappedTrackIndex],
-          count:
-            tracks[remappedTrackIndex].count + tracks[trackIndexToRemove].count
-        };
-
-        tracks[trackIndexToRemove] = {
-          ...tracks[trackIndexToRemove],
-          count: 0
-        };
-      }
-    }
-
-    incrementStage({ ...database, albums, artists, tracks });
-  }, [database, incrementStage, trackRemappings]);
+  const submitTrackDeduplications = useSubmitTrackDeduplications(
+    trackRemappings,
+    database,
+    incrementStage
+  );
 
   return (
     <StageContainer

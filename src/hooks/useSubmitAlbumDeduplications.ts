@@ -1,10 +1,10 @@
 import { useCallback } from 'react';
 
 import * as VacuumUtils from '../utils';
-import type { Database } from '../defs';
+import type { AlbumIndex, Database, Remappings } from '../defs';
 
 export default function useSubmitAlbumDeduplications(
-  albumRemappings: Record<number, number | null>,
+  albumRemappings: Remappings<'album'>,
   database: Database,
   incrementStage: (database: Database) => void
 ): () => void {
@@ -20,7 +20,7 @@ export default function useSubmitAlbumDeduplications(
     ) {
       const remappedAlbumIndex = VacuumUtils.remapDuplicates(
         albumRemappings,
-        albumIndexToRemove
+        VacuumUtils.makeIndex<'album'>(albumIndexToRemove)
       );
 
       if (remappedAlbumIndex !== albumIndexToRemove) {
@@ -31,7 +31,8 @@ export default function useSubmitAlbumDeduplications(
         artists[artistIndex] = {
           ...artists[artistIndex],
           albums: artists[artistIndex].albums.filter(
-            (albumIndex: number): boolean => albumIndex !== albumIndexToRemove
+            (albumIndex: AlbumIndex): boolean =>
+              albumIndex !== albumIndexToRemove
           )
         };
 

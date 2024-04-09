@@ -1,8 +1,8 @@
-import type { ArtistSplit, ArtistSplitPart } from '../defs';
+import type { ArtistIndex, ArtistSplit, ArtistSplitPart } from '../defs';
 
 export default function splitArtist(
   name: string,
-  artistIndex: number
+  artistIndex: ArtistIndex
 ): ArtistSplit {
   return {
     artistIndex,

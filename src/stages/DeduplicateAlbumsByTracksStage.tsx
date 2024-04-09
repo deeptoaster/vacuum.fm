@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useMemo, useState } from 'react';
 
 import * as VacuumUtils from '../utils';
-import type { Database, PossibleDuplicate } from '../defs';
+import type { Database, PossibleDuplicate, Remappings } from '../defs';
 import DeduplicateStageContents from '../components/DeduplicateStageContents';
 import { Stage } from '../defs';
 import StageContainer from '../components/StageContainer';
@@ -14,12 +14,12 @@ export default function DeduplicateAlbumsByTracksStage(props: {
 }): JSX.Element {
   const { database, incrementStage } = props;
 
-  const [albumRemappings, setAlbumRemappings] = useState<
-    Record<number, number | null>
-  >({});
+  const [albumRemappings, setAlbumRemappings] = useState<Remappings<'album'>>(
+    {}
+  );
 
   const possibleDuplicates = useMemo(
-    (): ReadonlyArray<PossibleDuplicate> =>
+    (): ReadonlyArray<PossibleDuplicate<'album'>> =>
       VacuumUtils.findPossibleDuplicatesByTracks(
         database.tracks,
         'albumIndex',

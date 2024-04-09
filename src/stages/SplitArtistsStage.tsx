@@ -18,7 +18,10 @@ export default function SplitArtistsStage(props: {
     Object.entries(database.artists)
       .map(
         ([artistIndex, artist]: [string, Artist]): ArtistSplit =>
-          VacuumUtils.splitArtist(artist.name, parseInt(artistIndex, 10))
+          VacuumUtils.splitArtist(
+            artist.name,
+            VacuumUtils.makeIndex<'artist'>(Number(artistIndex))
+          )
       )
       .filter((split: ArtistSplit): boolean => split.parts.length > 1)
   );

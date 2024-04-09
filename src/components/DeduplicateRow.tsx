@@ -1,15 +1,22 @@
 import * as React from 'react';
 import { useCallback } from 'react';
 
-import type { Entity, PossibleDuplicate, Track } from '../defs';
+import * as VacuumUtils from '../utils';
+import type {
+  Entities,
+  PossibleDuplicate,
+  Remappings,
+  Track,
+  TrackIndex
+} from '../defs';
 
 import './DeduplicateRow.css';
 
-export default function DeduplicateRow(props: {
-  entities: ReadonlyArray<Entity>;
-  possibleDuplicate: PossibleDuplicate;
-  remappings: Record<number, number | null>;
-  setRemappings: (remappings: Record<number, number | null>) => void;
+export default function DeduplicateRow<Brand extends keyof Entities>(props: {
+  entities: ReadonlyArray<Entities[Brand]>;
+  possibleDuplicate: PossibleDuplicate<Brand>;
+  remappings: Remappings<Brand>;
+  setRemappings: (remappings: Remappings<Brand>) => void;
   tracks: ReadonlyArray<Track>;
 }): JSX.Element | null {
   const {
@@ -33,7 +40,7 @@ export default function DeduplicateRow(props: {
     [leftIndex, remappings, rightIndex, setRemappings]
   );
 
-  const groupName = `${leftIndex}-${rightIndex}`;
+  const groupName = VacuumUtils.makeKey(leftIndex, rightIndex);
   const leftEntity = entities[leftIndex];
   const rightEntity = entities[rightIndex];
 
@@ -56,7 +63,7 @@ export default function DeduplicateRow(props: {
           {'tracks' in leftEntity ? (
             <ul>
               {leftEntity.tracks.slice(0, 3).map(
-                (trackIndex: number): JSX.Element => (
+                (trackIndex: TrackIndex): JSX.Element => (
                   <li key={trackIndex}>{tracks[trackIndex].name}</li>
                 )
               )}
@@ -78,7 +85,7 @@ export default function DeduplicateRow(props: {
           {'tracks' in rightEntity ? (
             <ul>
               {rightEntity.tracks.slice(0, 3).map(
-                (trackIndex: number): JSX.Element => (
+                (trackIndex: TrackIndex): JSX.Element => (
                   <li key={trackIndex}>{tracks[trackIndex].name}</li>
                 )
               )}

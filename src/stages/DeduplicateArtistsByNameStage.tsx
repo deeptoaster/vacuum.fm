@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useMemo, useState } from 'react';
 
 import * as VacuumUtils from '../utils';
-import type { Database, PossibleDuplicate } from '../defs';
+import type { Database, PossibleDuplicate, Remappings } from '../defs';
 import DeduplicateStageContents from '../components/DeduplicateStageContents';
 import { Stage } from '../defs';
 import StageContainer from '../components/StageContainer';
@@ -15,11 +15,11 @@ export default function DeduplicateArtistsByNameStage(props: {
   const { database, incrementStage } = props;
 
   const [artistRemappings, setArtistRemappings] = useState<
-    Record<number, number | null>
+    Remappings<'artist'>
   >({});
 
   const possibleDuplicates = useMemo(
-    (): ReadonlyArray<PossibleDuplicate> =>
+    (): ReadonlyArray<PossibleDuplicate<'artist'>> =>
       VacuumUtils.findPossibleDuplicatesByName(database.artists),
     [database]
   );

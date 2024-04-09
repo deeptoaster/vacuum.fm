@@ -1,4 +1,5 @@
-import type { Entity, PossibleDuplicate } from '../defs';
+import type { Entities, PossibleDuplicate } from '../defs';
+import makeIndex from './makeIndex';
 
 function normalizeName(name: string): string {
   return name
@@ -11,10 +12,12 @@ function normalizeName(name: string): string {
     .replace(/ +/g, ' ');
 }
 
-export default function findPossibleDuplicatesByName(
-  entities: ReadonlyArray<Entity>
-): ReadonlyArray<PossibleDuplicate> {
-  const possibleDuplicates: Array<PossibleDuplicate> = [];
+export default function findPossibleDuplicatesByName<
+  Brand extends keyof Entities
+>(
+  entities: ReadonlyArray<Entities[Brand]>
+): ReadonlyArray<PossibleDuplicate<Brand>> {
+  const possibleDuplicates: Array<PossibleDuplicate<Brand>> = [];
 
   for (let leftIndex = 0; leftIndex < entities.length; leftIndex += 1) {
     const leftName = entities[leftIndex].name;
@@ -30,10 +33,10 @@ export default function findPossibleDuplicatesByName(
 
       if (leftNormalizedName === rightNormalizedName) {
         possibleDuplicates.push({
-          leftIndex,
+          leftIndex: makeIndex<Brand>(leftIndex),
           mandatory: leftName === rightName,
           referenceEntityName: null,
-          rightIndex
+          rightIndex: makeIndex<Brand>(rightIndex)
         });
       }
     }
