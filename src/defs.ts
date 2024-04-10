@@ -43,7 +43,6 @@ export type Database = {
 
 export type DateSpan = 0 | 7 | 30 | 90 | 180 | 365;
 export type Entities = { album: Album; artist: Artist; track: Track };
-export type EntityIndex = AlbumIndex | ArtistIndex | TrackIndex;
 
 export type EntityIndices = {
   album: AlbumIndex;
@@ -52,7 +51,13 @@ export type EntityIndices = {
 };
 
 export type FlattenedChange = { after: FlattenedTrack; before: FlattenedTrack };
-export type FlattenedTrack = { album: string; artist: string; track: string };
+
+export type FlattenedTrack = {
+  album: string;
+  artist: string;
+  timestamp: number;
+  track: string;
+};
 
 export type PossibleDuplicate<Brand extends keyof Entities> = {
   readonly leftIndex: EntityIndices[Brand];
@@ -102,6 +107,7 @@ export type Track = {
   readonly artistIndex: ArtistIndex;
   readonly count: number;
   readonly name: string;
+  readonly timestamp: number;
 };
 
 export type TrackIndex = Branded<number, 'track'>;

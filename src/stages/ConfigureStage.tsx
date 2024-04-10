@@ -9,12 +9,13 @@ import type { DateSpan } from '../defs';
 import './ConfigureStage.css';
 
 export default function ConfigureStage(props: {
-  loadDatabase: (username: string, dateSpan: DateSpan) => Promise<void>;
+  loadDatabase: (dateSpan: DateSpan) => Promise<void>;
   setError: (error: Error | null) => void;
+  setUsername: (username: string) => void;
+  username: string;
 }): JSX.Element {
-  const { loadDatabase, setError } = props;
+  const { loadDatabase, setError, setUsername, username } = props;
   const [dateSpan, setDateSpan] = useState<DateSpan>(7);
-  const [username, setUsername] = useState<string>('');
   const usernameInput = useRef<HTMLInputElement>(null);
 
   const handleSubmit = useCallback(
@@ -30,7 +31,7 @@ export default function ConfigureStage(props: {
           );
         }
 
-        loadDatabase(username, dateSpan);
+        loadDatabase(dateSpan);
       } catch (error) {
         if ((error as Error).name === 'StageError') {
           setError(error as StageError);

@@ -1,7 +1,5 @@
-import type { EntityIndex } from '../defs';
-
 export default function makeKey(
-  ...entityIndices: ReadonlyArray<EntityIndex>
+  ...entityIndices: ReadonlyArray<number | string>
 ): string {
   return `:${entityIndices.join(':')}`;
 }

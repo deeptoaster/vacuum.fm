@@ -30,6 +30,7 @@ export default function App(): JSX.Element {
   const [loadingVisible, setLoadingVisible] = useState<boolean>(false);
   const [stage, setStage] = useState<Stage>(Stage.SPLIT_ARTISTS);
   const [, setTotalPages] = useState<number>(Infinity);
+  const [username, setUsername] = useState<string>('deeptoaster');
 
   const cancelLoad = useCallback((): void => {
     aborted.current = true;
@@ -48,7 +49,7 @@ export default function App(): JSX.Element {
   );
 
   const loadDatabase = useCallback(
-    async (username: string, dateSpan: DateSpan): Promise<void> => {
+    async (dateSpan: DateSpan): Promise<void> => {
       setLoadingVisible(true);
 
       try {
@@ -67,10 +68,10 @@ export default function App(): JSX.Element {
       setLoadingVisible(false);
       aborted.current = false;
     },
-    []
+    [username]
   );
 
-  useEffect((): void => setError(null), [stage]);
+  useEffect((): void => setError(null), [databaseByStage.length, stage]);
 
   return (
     <>
@@ -84,7 +85,12 @@ export default function App(): JSX.Element {
             timeout={TRANSITION_DURATION}
           >
             {databaseByStage.length === 0 ? (
-              <ConfigureStage loadDatabase={loadDatabase} setError={setError} />
+              <ConfigureStage
+                loadDatabase={loadDatabase}
+                setError={setError}
+                setUsername={setUsername}
+                username={username}
+              />
             ) : stage === Stage.SPLIT_ARTISTS ? (
               <SplitArtistsStage
                 database={databaseByStage[stage]}
@@ -120,6 +126,7 @@ export default function App(): JSX.Element {
               <SummaryStage
                 finalDatabase={databaseByStage[stage]}
                 initialDatabase={databaseByStage[0]}
+                username={username}
               />
             ) : null}
           </CSSTransition>

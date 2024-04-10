@@ -132,6 +132,7 @@
     "squiffles-components": "github:deeptoaster/squiffles-components#master"
   },
   "devDependencies": {
+    "@babel/cli": "^7.24.1",
     "@babel/core": "^7.23.7",
     "@babel/preset-env": "^7.23.8",
     "@babel/preset-react": "^7.23.3",
@@ -142,6 +143,7 @@
     "@types/react-transition-group": "^4.4.10",
     "autoprefixer": "^10.4.17",
     "babel-loader": "^8.3.0",
+    "babel-preset-minify": "^0.5.2",
     "css-loader": "^5.2.7",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-airbnb-typescript": "^17.1.0",
@@ -157,7 +159,8 @@
   },
   "scripts": {
     "build": "webpack --env production --mode production",
-    "start": "webpack serve --hot --mode development --open"
+    "prebuild": "babel src/scrobbleUpdater.ts --no-comments --out-file scrobbleUpdater.txt --presets @babel/preset-env,@babel/preset-typescript,minify",
+    "start": "npm run prebuild && webpack serve --hot --mode development --open"
   },
   "repository": {
     "type": "git",

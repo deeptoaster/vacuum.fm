@@ -19,6 +19,10 @@ module.exports = (env) => ({
         type: 'asset/resource'
       },
       {
+        test: /\.txt$/i,
+        type: 'asset/source'
+      },
+      {
         include: [
           path.resolve(__dirname, 'src'),
           path.resolve(__dirname, 'node_modules/squiffles-components')

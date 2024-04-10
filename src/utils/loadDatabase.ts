@@ -10,6 +10,7 @@ import type {
   EntityIndices
 } from '../defs';
 import makeIndex from './makeIndex';
+import makeKey from './makeKey';
 
 type Mutable<
   Brand extends keyof Entities,
@@ -58,11 +59,12 @@ export default async function loadDatabase(
       const track = response.recenttracks.track[trackIndex];
 
       if (track['@attr']?.nowplaying !== 'true') {
-        const artistName = track.artist['#text'];
-        const artistKey = `- ${artistName}`;
-        const albumName = track.album['#text'];
-        const albumKey = `${artistKey} - ${albumName}`;
-        const trackKey = `${albumKey} - ${track.name}`;
+        const artistName: string = track.artist['#text'];
+        const artistKey = makeKey(artistName);
+        const albumName: string = track.album['#text'];
+        const albumKey = makeKey(artistName, albumName);
+        const trackName: string = track.name;
+        const trackKey = makeKey(artistName, albumName, trackName);
 
         if (!(artistKey in artists)) {
           artists[artistKey] = {
@@ -95,7 +97,8 @@ export default async function loadDatabase(
             artistIndex: artists[artistKey].index,
             count: 0,
             index: makeIndex<'track'>(trackCount),
-            name: track.name
+            name: trackName,
+            timestamp: Number(track.date.uts)
           };
 
           artists[artistKey].tracks[trackCount] = true;
