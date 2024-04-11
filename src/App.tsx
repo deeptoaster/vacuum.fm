@@ -12,6 +12,7 @@ import DeduplicateAlbumsByTracksStage from './stages/DeduplicateAlbumsByTracksSt
 import DeduplicateArtistsByNameStage from './stages/DeduplicateArtistsByNameStage';
 import DeduplicateArtistsByTracksStage from './stages/DeduplicateArtistsByTracksStage';
 import DeduplicateTracksByNameStage from './stages/DeduplicateTracksByNameStage';
+import Help from './modals/Help';
 import Loading from './modals/Loading';
 import SplitArtistsStage from './stages/SplitArtistsStage';
 import { Stage } from './defs';
@@ -28,6 +29,7 @@ export default function App(): JSX.Element {
   >([]);
 
   const [error, setError] = useState<Error | null>(null);
+  const [helpVisible, setHelpVisible] = useState<boolean>(false);
   const [loadingVisible, setLoadingVisible] = useState<boolean>(false);
   const [stage, setStage] = useState<Stage>(Stage.SPLIT_ARTISTS);
   const [, setTotalPages] = useState<number>(Infinity);
@@ -36,6 +38,8 @@ export default function App(): JSX.Element {
   const cancelLoad = useCallback((): void => {
     aborted.current = true;
   }, []);
+
+  const hideHelp = useCallback((): void => setHelpVisible(false), []);
 
   const incrementStage = useCallback(
     (updatedDatabase: Database): void => {
@@ -72,10 +76,13 @@ export default function App(): JSX.Element {
     [username]
   );
 
+  const showHelp = useCallback((): void => setHelpVisible(true), []);
+
   useEffect((): void => setError(null), [databaseByStage.length, stage]);
 
   return (
     <>
+      <Help hideHelp={hideHelp} visible={helpVisible} />
       <Loading cancelLoad={cancelLoad} visible={loadingVisible} />
       <section>
         <SwitchTransition>
@@ -90,6 +97,7 @@ export default function App(): JSX.Element {
                 loadDatabase={loadDatabase}
                 setError={setError}
                 setUsername={setUsername}
+                showHelp={showHelp}
                 username={username}
               />
             ) : stage === Stage.SPLIT_ARTISTS ? (
@@ -142,6 +150,7 @@ export default function App(): JSX.Element {
           error={error}
           setError={setError}
           setStage={setStage}
+          showHelp={showHelp}
           stage={stage}
           visible={databaseByStage.length !== 0}
         />

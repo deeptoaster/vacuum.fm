@@ -12,9 +12,10 @@ export default function ConfigureStage(props: {
   loadDatabase: (dateSpan: DateSpan) => Promise<void>;
   setError: (error: Error) => void;
   setUsername: (username: string) => void;
+  showHelp: () => void;
   username: string;
 }): JSX.Element {
-  const { loadDatabase, setError, setUsername, username } = props;
+  const { loadDatabase, setError, setUsername, showHelp, username } = props;
   const [dateSpan, setDateSpan] = useState<DateSpan>(7);
   const usernameInput = useRef<HTMLInputElement>(null);
 
@@ -82,6 +83,9 @@ export default function ConfigureStage(props: {
         </Card>
       </main>
       <ul className="configure-card-links">
+        <li>
+          <Link onClick={showHelp}>About</Link>
+        </li>
         <li>
           <Link external={true} href={DONATION_URL}>
             Donate

@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Button, Footer, Tooltip } from 'squiffles-components';
+
 import { DONATION_URL, STAGE_NAMES, Stage } from './defs';
 
 import './VacuumFooter.css';
@@ -8,15 +9,16 @@ export default function VacuumFooter(props: {
   error: Error | null;
   setError: (error: Error | null) => void;
   setStage: (stage: Stage) => void;
+  showHelp: () => void;
   stage: Stage;
   visible: boolean;
 }): JSX.Element {
-  const { error, setError, setStage, stage, visible } = props;
+  const { error, setError, setStage, showHelp, stage, visible } = props;
 
   return (
     <Footer error={error} setError={setError} visible={visible}>
       <div>
-        <Button>Show Help</Button>
+        <Button onClick={showHelp}>Show Help</Button>
         <Button external={true} href={DONATION_URL}>
           Buy Me a Beer
         </Button>
