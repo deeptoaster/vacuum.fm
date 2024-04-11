@@ -41,7 +41,7 @@ declare const flattenedChanges: ReadonlyArray<string>;
       );
 
       request.send(
-        `csrfmiddlewaretoken=${csrfToken}&${flattenedChanges[changeIndex]}&submit=edit-scrobble`
+        `csrfmiddlewaretoken=${csrfToken}&${flattenedChanges[changeIndex]}&edit_all=on&submit=edit-scrobble`
       );
 
       if (request.status !== 200) {

@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { useCallback, useMemo } from 'react';
 import { Link } from 'squiffles-components';
+import { useMemo } from 'react';
 
 import type { Database, FlattenedChange, FlattenedTrack, Track } from '../defs';
 import { Stage } from '../defs';
@@ -70,12 +70,18 @@ export default function SummaryStage(props: {
 
   const scrobbleUpdaterUrl = useScrobbleUpdaterUrl(flattenedChanges, username);
 
-  const copyScrobbleUpdaterUrl = useCallback((): void => {
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    if (navigator.clipboard != null) {
-      navigator.clipboard.writeText(scrobbleUpdaterUrl);
-    }
-  }, [scrobbleUpdaterUrl]);
+  const copyScrobbleUpdaterUrl = useMemo(
+    (): (() => void) | null =>
+      flattenedChanges.length !== 0
+        ? (): void => {
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+            if (navigator.clipboard != null) {
+              navigator.clipboard.writeText(scrobbleUpdaterUrl);
+            }
+          }
+        : null,
+    [flattenedChanges, scrobbleUpdaterUrl]
+  );
 
   const libraryUrl = `https://www.last.fm/user/${username}/library`;
 
@@ -87,69 +93,75 @@ export default function SummaryStage(props: {
       stage={Stage.SUMMARY}
     >
       <p>Here is a summary of all the changes to be made to your scrobbles.</p>
-      <table className="summary-table">
-        <thead>
-          <tr>
-            <th>Before</th>
-            <th>After</th>
-          </tr>
-        </thead>
-        <tbody>
-          {flattenedChanges.map(
-            (change: FlattenedChange, changeIndex: number): JSX.Element => (
-              <SummaryRow key={changeIndex} {...change} />
-            )
-          )}
-        </tbody>
-      </table>
-      <p>
-        Your Last.fm Scrobble Updater script is ready. You can use it in one of
-        two ways:
-      </p>
-      <h4>Method 1: Bookmarklet</h4>
-      <ol>
-        <li>
-          Drag the Scrobble Updater button to your bookmarks bar. (You can also
-          right-click on it and select <samp>Bookmark Link</samp>.)
-        </li>
-        <li>
-          Open{' '}
-          <Link external={true} href={libraryUrl}>
-            {libraryUrl}
-          </Link>
-          . (Other Last.fm pages will not work.)
-        </li>
-        <li>
-          Click on the Scrobble Updater bookmarklet you just added to your
-          bookmarks bar.
-        </li>
-        <li>
-          When the script is done running, delete the bookmarklet from your
-          bookmarks bar.
-        </li>
-      </ol>
-      <h4>Method 2: Developer Console</h4>
-      <ol>
-        <li>
-          Click the Scrobble Updater button below to copy the script. (You can
-          also right-click on it and select <samp>Copy Link</samp>.)
-        </li>
-        <li>
-          Open{' '}
-          <Link external={true} href={libraryUrl}>
-            {libraryUrl}
-          </Link>
-          . (Other Last.fm pages will not work.)
-        </li>
-        <li>
-          Open the developer console. (You can usually do this by pressing{' '}
-          <kbd>F12</kbd> or <kbd>Command</kbd>+<kbd>Option</kbd>+<kbd>I</kbd>{' '}
-          and clicking the <samp>Console</samp> tab.)
-        </li>
-        <li>
-          Paste the script into the console and press <kbd>Enter</kbd>.
-        </li>
-      </ol>
+      {flattenedChanges.length !== 0 ? (
+        <>
+          <table className="summary-table">
+            <thead>
+              <tr>
+                <th>Before</th>
+                <th>After</th>
+              </tr>
+            </thead>
+            <tbody>
+              {flattenedChanges.map(
+                (change: FlattenedChange, changeIndex: number): JSX.Element => (
+                  <SummaryRow key={changeIndex} {...change} />
+                )
+              )}
+            </tbody>
+          </table>
+          <p>
+            Your Last.fm Scrobble Updater script is ready. You can use it in one
+            of two ways:
+          </p>
+          <h4>Method 1: Bookmarklet</h4>
+          <ol>
+            <li>
+              Drag the Scrobble Updater button to your bookmarks bar. (You can
+              also right-click on it and select <samp>Bookmark Link</samp>.)
+            </li>
+            <li>
+              Open{' '}
+              <Link external={true} href={libraryUrl}>
+                {libraryUrl}
+              </Link>
+              . (Other Last.fm pages will not work.)
+            </li>
+            <li>
+              Click on the Scrobble Updater bookmarklet you just added to your
+              bookmarks bar.
+            </li>
+            <li>
+              When the script is done running, delete the bookmarklet from your
+              bookmarks bar.
+            </li>
+          </ol>
+          <h4>Method 2: Developer Console</h4>
+          <ol>
+            <li>
+              Click the Scrobble Updater button below to copy the script. (You
+              can also right-click on it and select <samp>Copy Link</samp>.)
+            </li>
+            <li>
+              Open{' '}
+              <Link external={true} href={libraryUrl}>
+                {libraryUrl}
+              </Link>
+              . (Other Last.fm pages will not work.)
+            </li>
+            <li>
+              Open the developer console. (You can usually do this by pressing{' '}
+              <kbd>F12</kbd> or <kbd>Command</kbd>+<kbd>Option</kbd>+
+              <kbd>I</kbd> and clicking the <samp>Console</samp> tab.)
+            </li>
+            <li>
+              Paste the script into the console and press <kbd>Enter</kbd>.
+            </li>
+          </ol>
+        </>
+      ) : (
+        <h4>No changes needed. That's all!</h4>
+      )}
     </StageContainer>
   );
 }

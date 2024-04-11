@@ -7,14 +7,14 @@ import type { Stage } from '../defs';
 import './StageContainer.css';
 
 export default function StageContainer(props: {
-  buttonHref?: string | null;
+  buttonHref?: string;
   buttonLabel?: string;
   children: React.ReactNode;
-  onSubmit: () => void;
+  onSubmit: (() => void) | null;
   stage: Exclude<Stage, Stage.length>;
 }): JSX.Element {
   const {
-    buttonHref = null,
+    buttonHref,
     buttonLabel = 'Continue',
     children,
     onSubmit,
@@ -28,17 +28,19 @@ export default function StageContainer(props: {
       </h2>
       <Card width={40}>
         {children}
-        <figure>
-          {buttonHref != null ? (
-            <Button href={buttonHref} onClick={onSubmit} variant="primary">
-              {buttonLabel}
-            </Button>
-          ) : (
-            <Button onClick={onSubmit} variant="primary">
-              {buttonLabel}
-            </Button>
-          )}
-        </figure>
+        {onSubmit != null ? (
+          <figure>
+            {buttonHref != null ? (
+              <Button href={buttonHref} onClick={onSubmit} variant="primary">
+                {buttonLabel}
+              </Button>
+            ) : (
+              <Button onClick={onSubmit} variant="primary">
+                {buttonLabel}
+              </Button>
+            )}
+          </figure>
+        ) : null}
       </Card>
     </div>
   );

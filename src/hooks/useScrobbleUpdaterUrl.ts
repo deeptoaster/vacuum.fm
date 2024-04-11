@@ -29,6 +29,20 @@ export default function useScrobbleUpdaterUrl(
             `track_name_original=${encode(change.before.track)}`
           ].join('&')
         )
+        .join("','")}','${flattenedChanges
+        .map((change: FlattenedChange): string =>
+          [
+            `album_artist_name=${encode(change.after.artist)}`,
+            'album_artist_name_original=',
+            `album_name=${encode(change.after.album)}`,
+            `album_name_original=${encode(change.before.album)}`,
+            `artist_name=${encode(change.after.artist)}`,
+            `artist_name_original=${encode(change.before.artist)}`,
+            `timestamp=${change.before.timestamp}`,
+            `track_name=${encode(change.after.track)}`,
+            `track_name_original=${encode(change.before.track)}`
+          ].join('&')
+        )
         .join("','")}'];${(scrobbleUpdater as string)
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         .replace(/\$\{process.env.ROOT\}/g, process.env.ROOT!)
