@@ -5,6 +5,7 @@ import { TRANSITION_DURATION } from 'squiffles-components';
 
 import * as VacuumUtils from './utils';
 import type { Database, DateSpan } from './defs';
+import AddAlbumsStage from './stages/AddAlbumsStage';
 import ConfigureStage from './stages/ConfigureStage';
 import DeduplicateAlbumsByNameStage from './stages/DeduplicateAlbumsByNameStage';
 import DeduplicateAlbumsByTracksStage from './stages/DeduplicateAlbumsByTracksStage';
@@ -96,6 +97,11 @@ export default function App(): JSX.Element {
                 database={databaseByStage[stage]}
                 incrementStage={incrementStage}
                 setError={setError}
+              />
+            ) : stage === Stage.ADD_ALBUMS ? (
+              <AddAlbumsStage
+                database={databaseByStage[stage]}
+                incrementStage={incrementStage}
               />
             ) : stage === Stage.DEDUPLICATE_ARTISTS_BY_NAME ? (
               <DeduplicateArtistsByNameStage

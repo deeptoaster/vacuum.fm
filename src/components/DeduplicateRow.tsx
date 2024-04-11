@@ -1,4 +1,5 @@
 import * as React from 'react';
+import type { ChangeEvent } from 'react';
 import { useCallback } from 'react';
 
 import * as VacuumUtils from '../utils';
@@ -28,7 +29,7 @@ export default function DeduplicateRow<Brand extends keyof Entities>(props: {
   } = props;
 
   const handleChange = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>): void => {
+    (event: ChangeEvent<HTMLInputElement>): void => {
       if (event.target.checked) {
         setRemappings({
           ...remappings,

@@ -118,7 +118,7 @@ export default function SummaryStage(props: {
           <ol>
             <li>
               Drag the Scrobble Updater button to your bookmarks bar. (You can
-              also right-click on it and select <samp>Bookmark Link</samp>.)
+              also right-click on it and select <label>Bookmark Link</label>.)
             </li>
             <li>
               Open{' '}
@@ -140,7 +140,7 @@ export default function SummaryStage(props: {
           <ol>
             <li>
               Click the Scrobble Updater button below to copy the script. (You
-              can also right-click on it and select <samp>Copy Link</samp>.)
+              can also right-click on it and select <label>Copy Link</label>.)
             </li>
             <li>
               Open{' '}
@@ -152,7 +152,7 @@ export default function SummaryStage(props: {
             <li>
               Open the developer console. (You can usually do this by pressing{' '}
               <kbd>F12</kbd> or <kbd>Command</kbd>+<kbd>Option</kbd>+
-              <kbd>I</kbd> and clicking the <samp>Console</samp> tab.)
+              <kbd>I</kbd> and clicking the <label>Console</label> tab.)
             </li>
             <li>
               Paste the script into the console and press <kbd>Enter</kbd>.
@@ -160,7 +160,7 @@ export default function SummaryStage(props: {
           </ol>
         </>
       ) : (
-        <h4>No changes needed. That's all!</h4>
+        <h4>No changes to be made. That's all!</h4>
       )}
     </StageContainer>
   );

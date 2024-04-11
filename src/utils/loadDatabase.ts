@@ -59,12 +59,13 @@ export default async function loadDatabase(
       const track = response.recenttracks.track[trackIndex];
 
       if (track['@attr']?.nowplaying !== 'true') {
-        const artistName: string = track.artist['#text'];
-        const artistKey = makeKey(artistName);
         const albumName: string = track.album['#text'];
-        const albumKey = makeKey(artistName, albumName);
+        const artistName: string = track.artist['#text'];
         const trackName: string = track.name;
+        const artistKey = makeKey(artistName);
         const trackKey = makeKey(artistName, albumName, trackName);
+        const albumKey =
+          albumName !== '' ? makeKey(artistName, albumName) : trackKey;
 
         if (!(artistKey in artists)) {
           artists[artistKey] = {

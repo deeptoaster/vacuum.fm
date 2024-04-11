@@ -10,6 +10,13 @@ export type Album = {
 
 export type AlbumIndex = Branded<number, 'album'>;
 
+export type AlbumTitleSetting = {
+  readonly albumIndex: AlbumIndex;
+  readonly albumName: string;
+  readonly artistName: string;
+  readonly trackName: string;
+};
+
 export type Artist = {
   readonly albums: ReadonlyArray<AlbumIndex>;
   readonly count: number;
@@ -32,7 +39,7 @@ export type ArtistSplitPart = {
 };
 
 type Branded<Type, Brand extends keyof Entities> = Type & {
-  __brand: Brand;
+  readonly __brand: Brand;
 };
 
 export type Database = {
@@ -42,21 +49,29 @@ export type Database = {
 };
 
 export type DateSpan = 0 | 7 | 30 | 90 | 180 | 365;
-export type Entities = { album: Album; artist: Artist; track: Track };
 
-export type EntityIndices = {
-  album: AlbumIndex;
-  artist: ArtistIndex;
-  track: TrackIndex;
+export type Entities = {
+  readonly album: Album;
+  readonly artist: Artist;
+  readonly track: Track;
 };
 
-export type FlattenedChange = { after: FlattenedTrack; before: FlattenedTrack };
+export type EntityIndices = {
+  readonly album: AlbumIndex;
+  readonly artist: ArtistIndex;
+  readonly track: TrackIndex;
+};
+
+export type FlattenedChange = {
+  readonly after: FlattenedTrack;
+  readonly before: FlattenedTrack;
+};
 
 export type FlattenedTrack = {
-  album: string;
-  artist: string;
-  timestamp: number;
-  track: string;
+  readonly album: string;
+  readonly artist: string;
+  readonly timestamp: number;
+  readonly track: string;
 };
 
 export type PossibleDuplicate<Brand extends keyof Entities> = {
@@ -73,6 +88,7 @@ export type Remappings<Brand extends keyof Entities> = Record<
 
 export enum Stage {
   SPLIT_ARTISTS,
+  ADD_ALBUMS,
   DEDUPLICATE_ARTISTS_BY_NAME,
   DEDUPLICATE_ALBUMS_BY_NAME,
   DEDUPLICATE_TRACKS_BY_NAME,
@@ -84,6 +100,7 @@ export enum Stage {
 
 export const STAGE_NAMES: Record<Exclude<Stage, Stage.length>, string> = {
   [Stage.SPLIT_ARTISTS]: 'Scrobbles With Multiple Artists',
+  [Stage.ADD_ALBUMS]: 'Scrobbles Without Albums',
   [Stage.DEDUPLICATE_ARTISTS_BY_NAME]: 'Artists With Similar Names',
   [Stage.DEDUPLICATE_ALBUMS_BY_NAME]: 'Albums With Similar Names',
   [Stage.DEDUPLICATE_TRACKS_BY_NAME]: 'Tracks With Similar Names',
@@ -95,7 +112,7 @@ export const STAGE_NAMES: Record<Exclude<Stage, Stage.length>, string> = {
 export class StageError extends Error {
   public constructor(
     message: string,
-    public readonly artistIndex?: ArtistIndex
+    public readonly index?: number
   ) {
     super(message);
     this.name = 'StageError';

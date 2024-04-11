@@ -2,7 +2,13 @@ import * as React from 'react';
 import { useCallback, useState } from 'react';
 
 import * as VacuumUtils from '../utils';
-import type { Artist, ArtistSplit, ArtistSplitPart, Database } from '../defs';
+import type {
+  Artist,
+  ArtistIndex,
+  ArtistSplit,
+  ArtistSplitPart,
+  Database
+} from '../defs';
 import { Stage, StageError } from '../defs';
 import SplitArtistRow from '../components/SplitArtistRow';
 import StageContainer from '../components/StageContainer';
@@ -29,41 +35,39 @@ export default function SplitArtistsStage(props: {
   const [stageError, setStageError] = useState<StageError | null>(null);
 
   const setReplacement = useCallback(
-    (splitIndexToChange: number, replacement: string): void => {
+    (artistIndexToChange: ArtistIndex, replacement: string): void =>
       setArtistSplits(
-        artistSplits.map(
-          (split: ArtistSplit, splitIndex: number): ArtistSplit => {
-            if (splitIndex === splitIndexToChange) {
-              const replacementParts = VacuumUtils.splitArtist(
-                replacement,
-                split.artistIndex
-              ).parts;
-              let replacementPartIndex = 0;
+        artistSplits.map((split: ArtistSplit): ArtistSplit => {
+          if (split.artistIndex === artistIndexToChange) {
+            const replacementParts = VacuumUtils.splitArtist(
+              replacement,
+              split.artistIndex
+            ).parts;
 
-              const parts = split.parts.map(
-                (part: ArtistSplitPart): ArtistSplitPart => {
-                  if (
-                    replacementPartIndex === replacementParts.length ||
-                    part.name !== replacementParts[replacementPartIndex].name
-                  ) {
-                    return { ...part, included: false };
-                  } else {
-                    replacementPartIndex += 1;
-                    return { ...part, included: true };
-                  }
+            let replacementPartIndex = 0;
+
+            const parts = split.parts.map(
+              (part: ArtistSplitPart): ArtistSplitPart => {
+                if (
+                  replacementPartIndex === replacementParts.length ||
+                  part.name !== replacementParts[replacementPartIndex].name
+                ) {
+                  return { ...part, included: false };
+                } else {
+                  replacementPartIndex += 1;
+                  return { ...part, included: true };
                 }
-              );
+              }
+            );
 
-              return replacementPartIndex === replacementParts.length
-                ? { ...split, parts, replacement }
-                : { ...split, replacement };
-            } else {
-              return split;
-            }
+            return replacementPartIndex === replacementParts.length
+              ? { ...split, parts, replacement }
+              : { ...split, replacement };
+          } else {
+            return split;
           }
-        )
-      );
-    },
+        })
+      ),
     [artistSplits]
   );
 
@@ -107,28 +111,26 @@ export default function SplitArtistsStage(props: {
   }, [artistSplits, database, incrementStage, setError]);
 
   const togglePart = useCallback(
-    (splitIndexToChange: number, partIndexToToggle: number): void => {
+    (artistIndexToChange: ArtistIndex, partIndexToToggle: number): void => {
       setArtistSplits(
-        artistSplits.map(
-          (split: ArtistSplit, splitIndex: number): ArtistSplit => {
-            if (splitIndex === splitIndexToChange) {
-              const parts = split.parts.map(
-                (part: ArtistSplitPart, partIndex: number): ArtistSplitPart =>
-                  partIndex === partIndexToToggle
-                    ? { ...part, included: !part.included }
-                    : part
-              );
+        artistSplits.map((split: ArtistSplit): ArtistSplit => {
+          if (split.artistIndex === artistIndexToChange) {
+            const parts = split.parts.map(
+              (part: ArtistSplitPart, partIndex: number): ArtistSplitPart =>
+                partIndex === partIndexToToggle
+                  ? { ...part, included: !part.included }
+                  : part
+            );
 
-              return {
-                ...split,
-                parts,
-                replacement: VacuumUtils.makeArtistName(parts)
-              };
-            } else {
-              return split;
-            }
+            return {
+              ...split,
+              parts,
+              replacement: VacuumUtils.makeArtistName(parts)
+            };
+          } else {
+            return split;
           }
-        )
+        })
       );
     },
     [artistSplits]
@@ -160,16 +162,16 @@ export default function SplitArtistsStage(props: {
           </thead>
           <tbody>
             {artistSplits.map(
-              (split: ArtistSplit, splitIndex: number): JSX.Element => (
+              (split: ArtistSplit): JSX.Element => (
                 <SplitArtistRow
                   key={split.artistIndex}
                   setReplacement={(replacement: string): void =>
-                    setReplacement(splitIndex, replacement)
+                    setReplacement(split.artistIndex, replacement)
                   }
                   split={split}
                   stageError={stageError}
                   togglePart={(partIndex: number): void =>
-                    togglePart(splitIndex, partIndex)
+                    togglePart(split.artistIndex, partIndex)
                   }
                 />
               )
