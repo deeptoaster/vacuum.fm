@@ -4,6 +4,8 @@ import { useCallback } from 'react';
 
 import type { AlbumTitleSetting } from '../defs';
 
+import './AddAlbumRow.css';
+
 export default function AddAlbumRow(props: {
   albumTitleSetting: AlbumTitleSetting;
   setAlbumTitle: (albumName: string) => void;
@@ -19,7 +21,7 @@ export default function AddAlbumRow(props: {
 
   return (
     <tr>
-      <td>{albumTitleSetting.artistName}</td>
+      <td className="add-album-field">{albumTitleSetting.artistName}</td>
       <td className="input-group">
         <input
           onChange={updateAlbumTitle}
@@ -27,7 +29,7 @@ export default function AddAlbumRow(props: {
           value={albumTitleSetting.albumName}
         />
       </td>
-      <td>{albumTitleSetting.trackName}</td>
+      <td className="add-album-field">{albumTitleSetting.trackName}</td>
     </tr>
   );
 }

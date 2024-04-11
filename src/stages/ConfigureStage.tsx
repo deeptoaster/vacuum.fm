@@ -10,7 +10,7 @@ import './ConfigureStage.css';
 
 export default function ConfigureStage(props: {
   loadDatabase: (dateSpan: DateSpan) => Promise<void>;
-  setError: (error: Error | null) => void;
+  setError: (error: Error) => void;
   setUsername: (username: string) => void;
   username: string;
 }): JSX.Element {

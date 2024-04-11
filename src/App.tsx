@@ -132,6 +132,7 @@ export default function App(): JSX.Element {
               <SummaryStage
                 finalDatabase={databaseByStage[stage]}
                 initialDatabase={databaseByStage[0]}
+                setError={setError}
                 username={username}
               />
             ) : null}

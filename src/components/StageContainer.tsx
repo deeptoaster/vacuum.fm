@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Button, Card } from 'squiffles-components';
-import type { ReactNode } from 'react';
+import type { MouseEvent, ReactNode } from 'react';
 
 import { STAGE_NAMES } from '../defs';
 import type { Stage } from '../defs';
@@ -11,7 +11,7 @@ export default function StageContainer(props: {
   buttonHref?: string;
   buttonLabel?: string;
   children: ReactNode;
-  onSubmit: (() => void) | null;
+  onSubmit: ((event: MouseEvent) => void) | null;
   stage: Exclude<Stage, Stage.length>;
 }): JSX.Element {
   const {

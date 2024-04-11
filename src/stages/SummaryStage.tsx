@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Link } from 'squiffles-components';
+import type { MouseEvent } from 'react';
 import { useMemo } from 'react';
 
 import type { Database, FlattenedChange, FlattenedTrack, Track } from '../defs';
@@ -13,9 +14,10 @@ import './SummaryStage.css';
 export default function SummaryStage(props: {
   finalDatabase: Database;
   initialDatabase: Database;
+  setError: (error: Error) => void;
   username: string;
 }): JSX.Element {
-  const { finalDatabase, initialDatabase, username } = props;
+  const { finalDatabase, initialDatabase, setError, username } = props;
 
   const flattenedInitialTracks = useMemo(
     (): ReadonlyArray<FlattenedTrack> =>
@@ -71,16 +73,22 @@ export default function SummaryStage(props: {
   const scrobbleUpdaterUrl = useScrobbleUpdaterUrl(flattenedChanges, username);
 
   const copyScrobbleUpdaterUrl = useMemo(
-    (): (() => void) | null =>
+    (): ((event: MouseEvent) => void) | null =>
       flattenedChanges.length !== 0
-        ? (): void => {
+        ? (event: MouseEvent): void => {
+            event.preventDefault();
+
             // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             if (navigator.clipboard != null) {
               navigator.clipboard.writeText(scrobbleUpdaterUrl);
+
+              setError(
+                new Error('Scrobble updater script copied successfully!')
+              );
             }
           }
         : null,
-    [flattenedChanges, scrobbleUpdaterUrl]
+    [flattenedChanges, scrobbleUpdaterUrl, setError]
   );
 
   const libraryUrl = `https://www.last.fm/user/${username}/library`;
