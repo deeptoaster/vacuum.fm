@@ -38,7 +38,7 @@ export default function DeduplicateAlbumsByTracksStage(props: {
   return (
     <StageContainer
       onSubmit={submitAlbumDeduplications}
-      stage={Stage.DEDUPLICATE_ARTISTS_BY_TRACKS}
+      stage={Stage.DEDUPLICATE_ALBUMS_BY_TRACKS}
     >
       <DeduplicateStageContents
         entities={database.albums}

@@ -113,7 +113,7 @@ export default function Help(props: {
             external={true}
             href="https://digitalheir.github.io/lastfm-to-librefm-exporter/"
           >
-            Last.fm exporter / Libre.fm importer
+            Last.fm Exporter / Libre.fm Importer
           </Link>
         </li>
       </ul>

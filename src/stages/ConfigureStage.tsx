@@ -69,8 +69,7 @@ export default function ConfigureStage(props: {
                 { label: '30 days', value: 30 },
                 { label: '90 days', value: 90 },
                 { label: '180 days', value: 180 },
-                { label: '365 days', value: 365 },
-                { label: 'All time', value: 0 }
+                { label: '365 days', value: 365 }
               ]}
               value={dateSpan}
             />
