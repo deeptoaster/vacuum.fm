@@ -1,7 +1,51 @@
 /* eslint-disable func-names, no-alert, no-template-curly-in-string */
-declare const flattenedChanges: ReadonlyArray<string>;
+import type { FlattenedChange } from './defs';
+
+declare const flattenedChanges: ReadonlyArray<FlattenedChange>;
 
 (function (): void {
+  function encodeName(name: string): string {
+    return encodeURIComponent(name).replace(/%20/g, '+');
+  }
+
+  function encodeChange(
+    change: FlattenedChange,
+    blankAlbumArtist: boolean
+  ): string {
+    return [
+      `album_artist_name=${encodeName(change.after.artist)}`,
+      `album_artist_name_original=${blankAlbumArtist ? '' : encodeName(change.before.artist)}`,
+      `album_name=${encodeName(change.after.album)}`,
+      `album_name_original=${encodeName(change.before.album)}`,
+      `artist_name=${encodeName(change.after.artist)}`,
+      `artist_name_original=${encodeName(change.before.artist)}`,
+      `timestamp=${change.before.timestamp}`,
+      `track_name=${encodeName(change.after.track)}`,
+      `track_name_original=${encodeName(change.before.track)}`
+    ].join('&');
+  }
+
+  function updateScrobble(
+    request: XMLHttpRequest,
+    action: string,
+    csrfToken: string,
+    change: FlattenedChange,
+    blankAlbumArtist: boolean
+  ): boolean {
+    request.open('POST', action, false);
+
+    request.setRequestHeader(
+      'Content-Type',
+      'application/x-www-form-urlencoded'
+    );
+
+    request.send(
+      `csrfmiddlewaretoken=${csrfToken}&${encodeChange(change, blankAlbumArtist)}&edit_all=on&submit=edit-scrobble`
+    );
+
+    return request.status === 200;
+  }
+
   const libraryUrl = 'https://www.last.fm/user/${username}/library';
 
   try {
@@ -25,6 +69,7 @@ declare const flattenedChanges: ReadonlyArray<string>;
       throw new Error('Could not find scrobble edit form.');
     }
 
+    const { action } = form;
     const csrfToken = new FormData(form).get('csrfmiddlewaretoken') as string;
     const request = new XMLHttpRequest();
 
@@ -33,18 +78,22 @@ declare const flattenedChanges: ReadonlyArray<string>;
       changeIndex < flattenedChanges.length;
       changeIndex += 1
     ) {
-      request.open('POST', form.action, false);
-
-      request.setRequestHeader(
-        'Content-Type',
-        'application/x-www-form-urlencoded'
-      );
-
-      request.send(
-        `csrfmiddlewaretoken=${csrfToken}&${flattenedChanges[changeIndex]}&edit_all=on&submit=edit-scrobble`
-      );
-
-      if (request.status !== 200) {
+      if (
+        !updateScrobble(
+          request,
+          action,
+          csrfToken,
+          flattenedChanges[changeIndex],
+          false
+        ) &&
+        !updateScrobble(
+          request,
+          action,
+          csrfToken,
+          flattenedChanges[changeIndex],
+          true
+        )
+      ) {
         throw new Error(
           `Failed to update scrobble due to network error. Please go back to ${vacuumUrl} and generate a new scrobble updater.`
         );

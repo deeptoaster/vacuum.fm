@@ -159,7 +159,7 @@
   },
   "scripts": {
     "build": "webpack --env production --mode production",
-    "prebuild": "babel src/scrobbleUpdater.ts --no-comments --out-file scrobbleUpdater.txt --presets @babel/preset-env,@babel/preset-typescript,minify",
+    "prebuild": "sed -n '/^(function ()/,$p' src/scrobbleUpdater.ts | babel --filename scrobbleUpdater.ts --no-comments --out-file scrobbleUpdater.txt --presets @babel/preset-env,@babel/preset-typescript,minify --source-type script",
     "start": "npm run prebuild && webpack serve --hot --mode development --open"
   },
   "repository": {
