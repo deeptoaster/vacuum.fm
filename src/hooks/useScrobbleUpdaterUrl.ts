@@ -16,6 +16,7 @@ export default function useScrobbleUpdaterUrl(
       )
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         .replace(/\$\{process.env.ROOT\}/g, process.env.ROOT!)
+        .replace(/\$\{namespace\}/g, 'vacuum')
         .replace(/\$\{timestamp\}/g, Date.now().toString())
         .replace(/\$\{username\}/g, username)}`,
     [flattenedChanges, username]

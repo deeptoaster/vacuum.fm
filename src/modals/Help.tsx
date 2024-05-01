@@ -25,9 +25,9 @@ export default function Help(props: {
         >
           scrobblers
         </Link>{' '}
-        are created equal. Some don't scrobble album titles, some spell artist
-        names in different ways, and some list all the artists on a track while
-        others list only the main act. Even if you only use one scrobbling
+        are created equal&mdash;some don't scrobble album titles, some spell
+        artist names in different ways, and some list all the artists on a track
+        while others list only the main act. Even if you only use one scrobbling
         service, it may still report the same track inconsistently, such as if
         it was re-released on multiple albums or compilations.
       </p>
@@ -54,7 +54,7 @@ export default function Help(props: {
         <li>
           Use this tool to choose which clean-up actions you want to take. Don't
           worry&mdash;you'll see a full list of the changes to be made to your
-          scrobbles at the end.
+          scrobbles at the end, before they actually take effect!
         </li>
         <li>
           Download your custom-generated Scrobble Updater script or bookmarklet
@@ -63,14 +63,14 @@ export default function Help(props: {
         </li>
       </ol>
       <p>
-        <strong>This tool will guide you step-by-step.</strong> Enjoy your clean
-        data and happy scrobbling!
+        <strong>This tool will guide you step-by-step.</strong> Enjoy your
+        cleaned data and happy scrobbling!
       </p>
       <h3>Warning: Use this tool at your own risk.</h3>
       <p>
-        I've taken plenty of precautions to make sure this tool modifies
-        scrobbles correctly, but in the end, it is still a tool that
-        automatically modifies <em>your</em> data on a third-party website.{' '}
+        I've taken every precaution to make sure that your scrobbles are updated
+        correctly, but in the end, this is still a tool that automatically
+        modifies <em>your</em> data on a third-party website.{' '}
         <strong>
           I am not responsible for any data loss or corruption that may occur.
         </strong>
@@ -78,8 +78,9 @@ export default function Help(props: {
       <p>
         I highly recommend backing up your scrobbles before running your
         Scrobble Updater script. There are many services online that will allow
-        you to download your scrobbles or push them to an alternative scrobble
-        database. Here is a partial list in no particular order:
+        you to download your scrobbles or push them to an{' '}
+        <Link href="https://libre.fm/">alternative scrobble database</Link>.
+        Here is a list of them in no particular order:
       </p>
       <ul>
         <li>
