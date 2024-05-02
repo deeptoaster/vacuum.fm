@@ -33,7 +33,7 @@ export default function App(): JSX.Element {
   const [loadingVisible, setLoadingVisible] = useState<boolean>(false);
   const [stage, setStage] = useState<Stage>(Stage.SPLIT_ARTISTS);
   const [, setTotalPages] = useState<number>(Infinity);
-  const [username, setUsername] = useState<string>('deeptoaster');
+  const [username, setUsername] = useState<string>('');
 
   const cancelLoad = useCallback((): void => {
     aborted.current = true;

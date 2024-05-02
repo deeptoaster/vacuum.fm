@@ -4,17 +4,19 @@ Clean up your third-party Last.fm scrobbles
 
 https://fishbotwilleatyou.com/vacuum/
 
+![](http://fishbotwilleatyou.com/bin/images/showcase_vacuum.gif)
+
 ## About
 
 ### What's Vacuum.fm?
 
 **Vacuum.fm helps you clean up [Last.fm](https://last.fm/) scrobbles.** Not all
 [scrobblers](https://support.last.fm/t/more-ways-to-scrobble/192) are created
-equal. Some don't scrobble album titles, some spell artist names in different
-ways, and some list all the artists on a track while others list only the main
-act. Even if you only use one scrobbling service, it may still report the same
-track inconsistently, such as if it was re-released on multiple albums or
-compilations.
+equal&mdash;some don't scrobble album titles, some spell artist names in
+different ways, and some list all the artists on a track while others list only
+the main act. Even if you only use one scrobbling service, it may still report
+the same track inconsistently, such as if it was re-released on multiple albums
+or compilations.
 
 This can get annoying when you want to make [cool
 visualizations](https://www.reddit.com/r/lastfm/comments/e686jf/still_working_stats_tools/)
@@ -27,25 +29,25 @@ your data a spring cleaning.
     is the only way to edit your old scrobbles. Sorry!)
 2.  Use this tool to choose which clean-up actions you want to take. Don't
     worry&mdash;you'll see a full list of the changes to be made to your
-    scrobbles at the end.
+    scrobbles at the end, before they actually take effect!
 3.  Download your custom-generated Scrobble Updater script or bookmarklet and
     run it on the Last.fm website. It will automatically perform each of the
     scrobble edits you selected.
 
-**This tool will guide you step-by-step.** Enjoy your clean data and happy
+**This tool will guide you step-by-step.** Enjoy your cleaned data and happy
 scrobbling!
 
 ### Warning: Use this tool at your own risk.
 
-I've taken plenty of precautions to make sure this tool modifies scrobbles
-correctly, but in the end, it is still a tool that automatically modifies
+I've taken every precaution to make sure that your scrobbles are updated
+correctly, but in the end, this is still a tool that automatically modifies
 _your_ data on a third-party website. **I am not responsible for any data loss
 or corruption that may occur.**
 
 I highly recommend backing up your scrobbles before running your Scrobble
 Updater script. There are many services online that will allow you to download
-your scrobbles or push them to an alternative scrobble database. Here is a
-partial list in no particular order:
+your scrobbles or push them to an [alternative scrobble
+database](https://libre.fm). Here is a list of them in no particular order:
 
 - Last.fm Data Export [version 1](http://mainstream.ghan.nl/scrobbles.html)
   and [version 2](https://lastfm.ghan.nl/export/)
