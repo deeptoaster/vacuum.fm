@@ -60,12 +60,10 @@ database](https://libre.fm). Here is a list of them in no particular order:
 
 Feedback and contributions are always welcome! If you have any bug reports,
 feature requests, or questions, please open a GitHub
-[issue](https://github.com/deeptoaster/vacuum.fm/issues). To contribute, follow
-the instructions below to set up local development and submit a GitHub [pull
-request](https://github.com/deeptoaster/vacuum.fm/pulls).
+[issue](https://github.com/deeptoaster/vacuum.fm/issues).
 
-## Local Development
-
+To contribute, follow the instructions below to set up local development and
+submit a GitHub [pull request](https://github.com/deeptoaster/vacuum.fm/pulls).
 You will need to have [Git](https://git-scm.com/doc), [Node.js, and
 npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
 installed.
